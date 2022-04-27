@@ -1,0 +1,5 @@
+jdk:
+  - openjdk17
+install:
+  - echo "Publishing to maven local"
+  - ./gradlew clean publishToMavenLocal
