@@ -28,7 +28,9 @@ import cloud.commandframework.captions.Caption;
 import cloud.commandframework.captions.CaptionVariable;
 import cloud.commandframework.captions.StandardCaptionKeys;
 import cloud.commandframework.context.CommandContext;
+import cloud.commandframework.exceptions.CommandException;
 import cloud.commandframework.exceptions.parsing.NoInputProvidedException;
+import cloud.commandframework.exceptions.parsing.ParserException;
 import java.util.Queue;
 import java.util.function.BiFunction;
 import java.util.function.Predicate;
@@ -112,13 +114,11 @@ public final class RegexPreprocessor<C> implements BiFunction<@NonNull CommandCo
     /**
      * Exception thrown when input fails regex matching in {@link RegexPreprocessor}
      */
-    public static final class RegexValidationException extends IllegalArgumentException {
+    public static final class RegexValidationException extends CommandException {
 
         private static final long serialVersionUID = 747826566058072233L;
         private final String pattern;
         private final String failedString;
-        private final Caption failureCaption;
-        private final CommandContext<?> commandContext;
 
         private RegexValidationException(
                 final @NonNull String pattern,
@@ -126,25 +126,9 @@ public final class RegexPreprocessor<C> implements BiFunction<@NonNull CommandCo
                 final @NonNull Caption failureCaption,
                 final @NonNull CommandContext<?> commandContext
         ) {
+            super(failureCaption, commandContext.captionVariableReplacementHandler, pattern, failedString);
             this.pattern = pattern;
             this.failedString = failedString;
-            this.failureCaption = failureCaption;
-            this.commandContext = commandContext;
-        }
-
-        @Override
-        public String getMessage() {
-            return this.commandContext.formatMessage(
-                    this.failureCaption,
-                    CaptionVariable.of(
-                            "input",
-                            this.failedString
-                    ),
-                    CaptionVariable.of(
-                            "pattern",
-                            this.pattern
-                    )
-            );
         }
 
         /**

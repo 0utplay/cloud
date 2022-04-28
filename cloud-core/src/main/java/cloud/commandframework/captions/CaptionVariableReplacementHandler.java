@@ -33,10 +33,10 @@ public interface CaptionVariableReplacementHandler {
     /**
      * Replace the variables in a message and return the result
      *
-     * @param string    Message to replace variables in
+     * @param caption    Message to replace variables in
      * @param variables Variables
      * @return Transformed message
      */
-    @NonNull String replaceVariables(@NonNull String string, @NonNull CaptionVariable... variables);
+    @NonNull String replaceVariables(@NonNull Caption caption, @NonNull Object... variables);
 
 }

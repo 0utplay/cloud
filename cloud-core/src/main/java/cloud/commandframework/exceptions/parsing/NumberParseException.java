@@ -55,9 +55,9 @@ public abstract class NumberParseException extends ParserException {
                 parserClass,
                 context,
                 StandardCaptionKeys.ARGUMENT_PARSE_FAILURE_NUMBER,
-                CaptionVariable.of("input", input),
-                CaptionVariable.of("min", String.valueOf(min)),
-                CaptionVariable.of("max", String.valueOf(max))
+                input,
+                min,
+                max
         );
         this.input = input;
         this.min = min;

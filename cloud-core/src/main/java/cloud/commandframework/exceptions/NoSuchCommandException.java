@@ -24,6 +24,8 @@
 package cloud.commandframework.exceptions;
 
 import cloud.commandframework.arguments.CommandArgument;
+import cloud.commandframework.captions.Caption;
+import cloud.commandframework.captions.CaptionVariableReplacementHandler;
 import java.util.List;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
@@ -47,23 +49,12 @@ public final class NoSuchCommandException extends CommandParseException {
     public NoSuchCommandException(
             final @NonNull Object commandSender,
             final @NonNull List<CommandArgument<?, ?>> currentChain,
-            final @NonNull String command
+            final @NonNull String command,
+            final @NonNull Caption caption,
+            final @NonNull CaptionVariableReplacementHandler replacementHandler
     ) {
-        super(commandSender, currentChain);
+        super(commandSender, currentChain, caption, replacementHandler, command);
         this.suppliedCommand = command;
-    }
-
-
-    @Override
-    public String getMessage() {
-        final StringBuilder builder = new StringBuilder();
-        for (final CommandArgument<?, ?> commandArgument : this.getCurrentChain()) {
-            if (commandArgument == null) {
-                continue;
-            }
-            builder.append(" ").append(commandArgument.getName());
-        }
-        return String.format("Unrecognized command input '%s' following chain%s", this.suppliedCommand, builder.toString());
     }
 
     /**
@@ -73,16 +64,6 @@ public final class NoSuchCommandException extends CommandParseException {
      */
     public @NonNull String getSuppliedCommand() {
         return this.suppliedCommand;
-    }
-
-    @Override
-    public synchronized Throwable fillInStackTrace() {
-        return this;
-    }
-
-    @Override
-    public synchronized Throwable initCause(final Throwable cause) {
-        return this;
     }
 
 }

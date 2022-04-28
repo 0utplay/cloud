@@ -1,12 +1,13 @@
+import gradle.kotlin.dsl.accessors._4cd629378ad4e1190c2a7fb4bcc7792f.indra
 import net.kyori.indra.repository.sonatypeSnapshots
-import net.ltgt.gradle.errorprone.errorprone
 import org.cadixdev.gradle.licenser.header.HeaderStyle
+import org.jetbrains.dokka.pages.SimpleAttr.Companion.header
 
 plugins {
     id("net.kyori.indra")
     id("net.kyori.indra.checkstyle")
     id("net.kyori.indra.license-header")
-    id("net.ltgt.errorprone")
+   // id("net.ltgt.errorprone")
 }
 
 indra {
@@ -24,18 +25,6 @@ project.gradle.startParameter.excludedTaskNames.add("checkstyleTest")
 
 tasks {
     withType<JavaCompile> {
-        options.errorprone {
-            /* These are just annoying */
-            disable(
-                "JdkObsolete",
-                "FutureReturnValueIgnored",
-                "ImmutableEnumChecker",
-                "StringSplitter",
-                "EqualsGetClass",
-                "CatchAndPrintStackTrace",
-                "InlineMeSuggester",
-            )
-        }
         options.compilerArgs.addAll(listOf("-Xlint:-processing", "-Werror"))
     }
 }
@@ -99,7 +88,7 @@ dependencies {
     testImplementation(libs.mockitoKotlin)
     testImplementation(libs.truth)
     testImplementation(libs.truthJava8)
-    errorprone(libs.errorproneCore)
+    //errorprone(libs.errorproneCore)
     // Silences compiler warnings from guava using errorprone
-    compileOnly(libs.errorproneAnnotations)
+    //compileOnly(libs.errorproneAnnotations)
 }

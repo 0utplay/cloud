@@ -174,12 +174,7 @@ public final class UUIDArgument<C> extends CommandArgument<C, UUID> {
                 final @NonNull String input,
                 final @NonNull CommandContext<?> context
         ) {
-            super(
-                    UUIDParser.class,
-                    context,
-                    StandardCaptionKeys.ARGUMENT_PARSE_FAILURE_UUID,
-                    CaptionVariable.of("input", input)
-            );
+            super(UUIDParser.class, context, StandardCaptionKeys.ARGUMENT_PARSE_FAILURE_UUID, input);
             this.input = input;
         }
 

@@ -1,5 +1,4 @@
 import net.fabricmc.loom.task.AbstractRunTask
-import net.ltgt.gradle.errorprone.errorprone
 
 plugins {
     id("cloud.base-conventions")
@@ -7,11 +6,6 @@ plugins {
 }
 
 tasks {
-    compileJava {
-        options.errorprone {
-            excludedPaths.set(".*[/\\\\]mixin[/\\\\].*")
-        }
-    }
 
     withType<ProcessResources> {
         inputs.property("version", project.version)

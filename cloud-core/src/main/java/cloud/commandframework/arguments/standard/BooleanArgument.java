@@ -27,7 +27,6 @@ import cloud.commandframework.ArgumentDescription;
 import cloud.commandframework.arguments.CommandArgument;
 import cloud.commandframework.arguments.parser.ArgumentParseResult;
 import cloud.commandframework.arguments.parser.ArgumentParser;
-import cloud.commandframework.captions.CaptionVariable;
 import cloud.commandframework.captions.StandardCaptionKeys;
 import cloud.commandframework.context.CommandContext;
 import cloud.commandframework.exceptions.parsing.NoInputProvidedException;
@@ -154,9 +153,9 @@ public final class BooleanArgument<C> extends CommandArgument<C, Boolean> {
 
     public static final class BooleanParser<C> implements ArgumentParser<C, Boolean> {
 
-        private static final List<String> LIBERAL = Arrays.asList("TRUE", "YES", "ON", "FALSE", "NO", "OFF");
-        private static final List<String> LIBERAL_TRUE = Arrays.asList("TRUE", "YES", "ON");
-        private static final List<String> LIBERAL_FALSE = Arrays.asList("FALSE", "NO", "OFF");
+        private static final List<String> LIBERAL = Arrays.asList("true", "on", "false", "off");
+        private static final List<String> LIBERAL_TRUE = Arrays.asList("true", "on");
+        private static final List<String> LIBERAL_FALSE = Arrays.asList("false", "off");
 
         private final boolean liberal;
 
@@ -217,7 +216,7 @@ public final class BooleanArgument<C> extends CommandArgument<C, Boolean> {
                 final @NonNull String input
         ) {
             if (!this.liberal) {
-                return Arrays.asList("TRUE", "FALSE");
+                return Arrays.asList("true", "false");
             }
 
             return LIBERAL;
@@ -252,12 +251,7 @@ public final class BooleanArgument<C> extends CommandArgument<C, Boolean> {
                 final boolean liberal,
                 final @NonNull CommandContext<?> context
         ) {
-            super(
-                    BooleanParser.class,
-                    context,
-                    StandardCaptionKeys.ARGUMENT_PARSE_FAILURE_BOOLEAN,
-                    CaptionVariable.of("input", input)
-            );
+            super(BooleanParser.class, context, StandardCaptionKeys.ARGUMENT_PARSE_FAILURE_BOOLEAN, input);
             this.input = input;
             this.liberal = liberal;
         }

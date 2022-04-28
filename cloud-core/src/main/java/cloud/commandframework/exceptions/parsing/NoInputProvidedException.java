@@ -46,11 +46,7 @@ public class NoInputProvidedException extends ParserException {
             final Class<?> argumentParser,
             final @NonNull CommandContext<?> context
     ) {
-        super(
-                argumentParser,
-                context,
-                StandardCaptionKeys.ARGUMENT_PARSE_FAILURE_NO_INPUT_PROVIDED
-        );
+        super(argumentParser, context, StandardCaptionKeys.ARGUMENT_PARSE_FAILURE_NO_INPUT_PROVIDED);
     }
 
 }

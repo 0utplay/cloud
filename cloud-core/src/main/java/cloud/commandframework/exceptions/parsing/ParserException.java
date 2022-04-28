@@ -26,56 +26,25 @@ package cloud.commandframework.exceptions.parsing;
 import cloud.commandframework.captions.Caption;
 import cloud.commandframework.captions.CaptionVariable;
 import cloud.commandframework.context.CommandContext;
+import cloud.commandframework.exceptions.CommandException;
 import java.util.Arrays;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-public class ParserException extends IllegalArgumentException {
+public class ParserException extends CommandException {
 
     private static final long serialVersionUID = -4409795575435072170L;
     private final Class<?> argumentParser;
     private final CommandContext<?> context;
-    private final Caption errorCaption;
-    private final CaptionVariable[] captionVariables;
 
     protected ParserException(
             final @NonNull Class<?> argumentParser,
             final @NonNull CommandContext<?> context,
             final @NonNull Caption errorCaption,
-            final @NonNull CaptionVariable... captionVariables
+            final @NonNull Object... captionVariables
     ) {
+        super(errorCaption, context.captionVariableReplacementHandler, captionVariables);
         this.argumentParser = argumentParser;
         this.context = context;
-        this.errorCaption = errorCaption;
-        this.captionVariables = captionVariables;
-    }
-
-    @Override
-    public final String getMessage() {
-        return this.context.formatMessage(
-                this.errorCaption,
-                this.captionVariables
-        );
-    }
-
-    /**
-     * Get the error caption for this parser exception
-     *
-     * @return The caption
-     * @since 1.4.0
-     */
-    public @NonNull Caption errorCaption() {
-        return this.errorCaption;
-    }
-
-    /**
-     * Get a copy of the caption variables present in this parser exception.
-     * The returned array may be empty if no variables are present.
-     *
-     * @return The caption variables
-     * @since 1.4.0
-     */
-    public @NonNull CaptionVariable @NonNull [] captionVariables() {
-        return Arrays.copyOf(this.captionVariables, this.captionVariables.length);
     }
 
     /**

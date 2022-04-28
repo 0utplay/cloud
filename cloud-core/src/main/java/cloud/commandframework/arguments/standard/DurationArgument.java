@@ -297,12 +297,7 @@ public final class DurationArgument<C> extends CommandArgument<C, Duration> {
                 final @NonNull String input,
                 final @NonNull CommandContext<?> context
         ) {
-            super(
-                    Parser.class,
-                    context,
-                    StandardCaptionKeys.ARGUMENT_PARSE_FAILURE_DURATION,
-                    CaptionVariable.of("input", input)
-            );
+            super(Parser.class, context, StandardCaptionKeys.ARGUMENT_PARSE_FAILURE_DURATION, input);
             this.input = input;
         }
 

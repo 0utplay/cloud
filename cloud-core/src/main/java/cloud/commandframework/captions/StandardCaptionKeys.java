@@ -38,68 +38,77 @@ public final class StandardCaptionKeys {
     /**
      * Variables: None
      */
-    public static final Caption ARGUMENT_PARSE_FAILURE_NO_INPUT_PROVIDED = of("argument.parse.failure.no_input_was_provided");
+    public static final Caption ARGUMENT_PARSE_FAILURE_NO_INPUT_PROVIDED = of("argument-parse-failure-no-input-was-provided");
     /**
      * Variables: {input}
      */
-    public static final Caption ARGUMENT_PARSE_FAILURE_BOOLEAN = of("argument.parse.failure.boolean");
+    public static final Caption ARGUMENT_PARSE_FAILURE_BOOLEAN = of("argument-parse-failure-boolean");
     /**
      * Variables: {input}, {min}, {max}
      */
-    public static final Caption ARGUMENT_PARSE_FAILURE_NUMBER = of("argument.parse.failure.number");
+    public static final Caption ARGUMENT_PARSE_FAILURE_NUMBER = of("argument-parse-failure-number");
     /**
      * Variables: {input}
      */
-    public static final Caption ARGUMENT_PARSE_FAILURE_CHAR = of("argument.parse.failure.char");
+    public static final Caption ARGUMENT_PARSE_FAILURE_CHAR = of("argument-parse-failure-char");
     /**
      * Variables: {input}, {stringMode}
      */
-    public static final Caption ARGUMENT_PARSE_FAILURE_STRING = of("argument.parse.failure.string");
+    public static final Caption ARGUMENT_PARSE_FAILURE_STRING = of("argument-parse-failure-string");
     /**
      * Variables: {input}
      */
-    public static final Caption ARGUMENT_PARSE_FAILURE_UUID = of("argument.parse.failure.uuid");
+    public static final Caption ARGUMENT_PARSE_FAILURE_UUID = of("argument-parse-failure-uuid");
     /**
      * Variables: {input}, {acceptableValues}
      */
-    public static final Caption ARGUMENT_PARSE_FAILURE_ENUM = of("argument.parse.failure.enum");
+    public static final Caption ARGUMENT_PARSE_FAILURE_ENUM = of("argument-parse-failure-enum");
     /**
      * Variables: {input}, {pattern}
      */
-    public static final Caption ARGUMENT_PARSE_FAILURE_REGEX = of("argument.parse.failure.regex");
+    public static final Caption ARGUMENT_PARSE_FAILURE_REGEX = of("argument-parse-failure-regex");
     /**
      * Variables: {flag}
      */
-    public static final Caption ARGUMENT_PARSE_FAILURE_FLAG_UNKNOWN_FLAG = of("argument.parse.failure.flag.unknown");
+    public static final Caption ARGUMENT_PARSE_FAILURE_FLAG_UNKNOWN_FLAG = of("argument-parse-failure-flag-unknown");
     /**
      * Variables: {flag}
      */
-    public static final Caption ARGUMENT_PARSE_FAILURE_FLAG_DUPLICATE_FLAG = of("argument.parse.failure.flag.duplicate_flag");
+    public static final Caption ARGUMENT_PARSE_FAILURE_FLAG_DUPLICATE_FLAG = of("argument-parse-failure-flag-duplicate-flag");
     /**
      * Variables: {input}
      */
-    public static final Caption ARGUMENT_PARSE_FAILURE_FLAG_NO_FLAG_STARTED = of("argument.parse.failure.flag.no_flag_started");
+    public static final Caption ARGUMENT_PARSE_FAILURE_FLAG_NO_FLAG_STARTED = of("argument-parse-failure-flag-no-flag-started");
     /**
      * Variables: {flag}
      */
-    public static final Caption ARGUMENT_PARSE_FAILURE_FLAG_MISSING_ARGUMENT = of("argument.parse.failure.flag.missing_argument");
+    public static final Caption ARGUMENT_PARSE_FAILURE_FLAG_MISSING_ARGUMENT = of("argument-parse-failure-flag-missing-argument");
     /**
      * Variables: {flag}
      */
-    public static final Caption ARGUMENT_PARSE_FAILURE_FLAG_NO_PERMISSION = of("argument.parse.failure.flag.no_permission");
+    public static final Caption ARGUMENT_PARSE_FAILURE_FLAG_NO_PERMISSION = of("argument-parse-failure-flag-no-permission");
     /**
      * Variables: {input}
      */
-    public static final Caption ARGUMENT_PARSE_FAILURE_COLOR = of("argument.parse.failure.color");
+    public static final Caption ARGUMENT_PARSE_FAILURE_COLOR = of("argument-parse-failure-color");
     /**
      * Variables: {input}
      */
-    public static final Caption ARGUMENT_PARSE_FAILURE_DURATION = of("argument.parse.failure.duration");
+    public static final Caption ARGUMENT_PARSE_FAILURE_DURATION = of("argument-parse-failure-duration");
+
+    public static final Caption INVALID_COMMAND_SENDER = of("invalid-command-sender");
+
+    public static final Caption INVALID_COMMAND_SYNTAX = of("invalid-command-syntax");
+
+    public static final Caption MISSING_COMMAND_PERMISSION = of("missing-command-permission");
+
+    public static final Caption NO_SUCH_COMMAND = of("no-such-command");
+
 
     private StandardCaptionKeys() {
     }
 
-    private static @NonNull Caption of(final @NonNull String key) {
+    public static @NonNull Caption of(final @NonNull String key) {
         final Caption caption = Caption.of(key);
         RECOGNIZED_CAPTIONS.add(caption);
         return caption;

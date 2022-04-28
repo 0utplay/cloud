@@ -172,7 +172,7 @@ public final class CharArgument<C> extends CommandArgument<C, Character> {
                     CharacterParser.class,
                     context,
                     StandardCaptionKeys.ARGUMENT_PARSE_FAILURE_CHAR,
-                    CaptionVariable.of("input", input)
+                    input
             );
             this.input = input;
         }

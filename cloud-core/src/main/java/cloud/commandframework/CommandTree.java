@@ -28,6 +28,7 @@ import cloud.commandframework.arguments.StaticArgument;
 import cloud.commandframework.arguments.compound.CompoundArgument;
 import cloud.commandframework.arguments.compound.FlagArgument;
 import cloud.commandframework.arguments.parser.ArgumentParseResult;
+import cloud.commandframework.captions.StandardCaptionKeys;
 import cloud.commandframework.context.CommandContext;
 import cloud.commandframework.exceptions.AmbiguousNodeException;
 import cloud.commandframework.exceptions.ArgumentParseException;
@@ -147,7 +148,8 @@ public final class CommandTree<C> {
                         commandContext.getSender(),
                         command.getSenderType().get(),
                         new ArrayList<>(command.getArguments()),
-                        command
+                        command,
+                        commandContext.captionVariableReplacementHandler
                 ));
             }
         }
@@ -170,7 +172,8 @@ public final class CommandTree<C> {
                             .stream()
                             .filter(node -> node.getValue() != null)
                             .map(Node::getValue)
-                            .collect(Collectors.toList())
+                            .collect(Collectors.toList()),
+                    commandContext.captionVariableReplacementHandler
             ));
         }
 
@@ -199,7 +202,9 @@ public final class CommandTree<C> {
                             .stream()
                             .filter(node -> node.getValue() != null)
                             .map(Node::getValue)
-                            .collect(Collectors.toList())
+                            .collect(Collectors.toList()),
+                            commandContext.captionVariableReplacementHandler
+
                     ));
                 }
             } else {
@@ -211,7 +216,8 @@ public final class CommandTree<C> {
                         .stream()
                         .filter(node -> node.getValue() != null)
                         .map(Node::getValue)
-                        .collect(Collectors.toList())
+                        .collect(Collectors.toList()),
+                        commandContext.captionVariableReplacementHandler
                 ));
             }
         } else {
@@ -240,7 +246,10 @@ public final class CommandTree<C> {
                 return Pair.of(null, new NoSuchCommandException(
                         commandContext.getSender(),
                         this.getChain(root).stream().map(Node::getValue).collect(Collectors.toList()),
-                        this.stringOrEmpty(commandQueue.peek())
+                        this.stringOrEmpty(commandQueue.peek()),
+                        StandardCaptionKeys.NO_SUCH_COMMAND,
+                        commandContext.captionVariableReplacementHandler
+
                 ));
             }
             /* If we couldn't match a child, check if there's a command attached and execute it */
@@ -257,7 +266,8 @@ public final class CommandTree<C> {
                                     .stream()
                                     .filter(node -> node.getValue() != null)
                                     .map(Node::getValue)
-                                    .collect(Collectors.toList())
+                                    .collect(Collectors.toList()),
+                            commandContext.captionVariableReplacementHandler
                     ));
                 }
                 return Pair.of(root.getValue().getOwningCommand(), null);
@@ -270,7 +280,8 @@ public final class CommandTree<C> {
                     .stream()
                     .filter(node -> node.getValue() != null)
                     .map(Node::getValue)
-                    .collect(Collectors.toList())
+                    .collect(Collectors.toList()),
+                    commandContext.captionVariableReplacementHandler
             ));
         }
     }
@@ -321,7 +332,8 @@ public final class CommandTree<C> {
                                 .stream()
                                 .filter(node -> node.getValue() != null)
                                 .map(Node::getValue)
-                                .collect(Collectors.toList())
+                                .collect(Collectors.toList()),
+                        commandContext.captionVariableReplacementHandler
                 ));
             }
             if (child.getValue() != null) {
@@ -357,7 +369,8 @@ public final class CommandTree<C> {
                                                 .stream()
                                                 .filter(node -> node.getValue() != null)
                                                 .map(Node::getValue)
-                                                .collect(Collectors.toList())
+                                                .collect(Collectors.toList()),
+                                        commandContext.captionVariableReplacementHandler
                                 ));
                             }
                             return Pair.of(command, null);
@@ -373,7 +386,8 @@ public final class CommandTree<C> {
                                 .stream()
                                 .filter(node -> node.getValue() != null)
                                 .map(Node::getValue)
-                                .collect(Collectors.toList())
+                                .collect(Collectors.toList()),
+                                commandContext.captionVariableReplacementHandler
                         ));
                     } else {
                         /* The child is not a leaf, but may have an intermediary executor, attempt to use it */
@@ -390,7 +404,8 @@ public final class CommandTree<C> {
                                                 .stream()
                                                 .filter(node -> node.getValue() != null)
                                                 .map(Node::getValue)
-                                                .collect(Collectors.toList())
+                                                .collect(Collectors.toList()),
+                                        commandContext.captionVariableReplacementHandler
                                 ));
                             }
                             return Pair.of(command, null);
@@ -403,7 +418,8 @@ public final class CommandTree<C> {
                                 .stream()
                                 .filter(node -> node.getValue() != null)
                                 .map(Node::getValue)
-                                .collect(Collectors.toList())
+                                .collect(Collectors.toList()),
+                                commandContext.captionVariableReplacementHandler
                         ));
                     }
                 }
@@ -441,7 +457,8 @@ public final class CommandTree<C> {
                                     .stream()
                                     .filter(node -> node.getValue() != null)
                                     .map(Node::getValue)
-                                    .collect(Collectors.toList())
+                                    .collect(Collectors.toList()),
+                                    commandContext.captionVariableReplacementHandler
                             ));
                         }
                     } else {

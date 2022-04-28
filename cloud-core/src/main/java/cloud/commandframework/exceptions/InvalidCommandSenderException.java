@@ -25,6 +25,8 @@ package cloud.commandframework.exceptions;
 
 import cloud.commandframework.Command;
 import cloud.commandframework.arguments.CommandArgument;
+import cloud.commandframework.captions.CaptionVariableReplacementHandler;
+import cloud.commandframework.captions.StandardCaptionKeys;
 import java.util.List;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -48,9 +50,10 @@ public final class InvalidCommandSenderException extends CommandParseException {
     public InvalidCommandSenderException(
             final @NonNull Object commandSender,
             final @NonNull Class<?> requiredSender,
-            final @NonNull List<@NonNull CommandArgument<?, ?>> currentChain
+            final @NonNull List<@NonNull CommandArgument<?, ?>> currentChain,
+            final @NonNull CaptionVariableReplacementHandler replacementHandler
     ) {
-        this(commandSender, requiredSender, currentChain, null);
+        this(commandSender, requiredSender, currentChain, null, replacementHandler);
     }
 
     /**
@@ -66,9 +69,17 @@ public final class InvalidCommandSenderException extends CommandParseException {
             final @NonNull Object commandSender,
             final @NonNull Class<?> requiredSender,
             final @NonNull List<@NonNull CommandArgument<?, ?>> currentChain,
-            final @Nullable Command<?> command
+            final @Nullable Command<?> command,
+            final @NonNull CaptionVariableReplacementHandler replacementHandler
     ) {
-        super(commandSender, currentChain);
+        super(
+                commandSender,
+                currentChain,
+                StandardCaptionKeys.INVALID_COMMAND_SENDER,
+                replacementHandler,
+                commandSender,
+                requiredSender
+        );
         this.requiredSender = requiredSender;
         this.command = command;
     }
@@ -80,15 +91,6 @@ public final class InvalidCommandSenderException extends CommandParseException {
      */
     public @NonNull Class<?> getRequiredSender() {
         return this.requiredSender;
-    }
-
-    @Override
-    public String getMessage() {
-        return String.format(
-                "%s is not allowed to execute that command. Must be of type %s",
-                getCommandSender().getClass().getSimpleName(),
-                this.requiredSender.getSimpleName()
-        );
     }
 
     /**

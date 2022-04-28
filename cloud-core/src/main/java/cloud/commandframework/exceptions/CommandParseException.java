@@ -24,6 +24,8 @@
 package cloud.commandframework.exceptions;
 
 import cloud.commandframework.arguments.CommandArgument;
+import cloud.commandframework.captions.Caption;
+import cloud.commandframework.captions.CaptionVariableReplacementHandler;
 import java.util.Collections;
 import java.util.List;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -32,7 +34,7 @@ import org.checkerframework.checker.nullness.qual.NonNull;
  * Exception thrown when parsing user input into a command
  */
 @SuppressWarnings("unused")
-public class CommandParseException extends IllegalArgumentException {
+public class CommandParseException extends CommandException {
 
     private static final long serialVersionUID = -2415981126382517435L;
     private final Object commandSender;
@@ -46,8 +48,13 @@ public class CommandParseException extends IllegalArgumentException {
      */
     protected CommandParseException(
             final @NonNull Object commandSender,
-            final @NonNull List<CommandArgument<?, ?>> currentChain
+            final @NonNull List<CommandArgument<?, ?>> currentChain,
+            final @NonNull Caption caption,
+            final @NonNull CaptionVariableReplacementHandler replacementHandler,
+            final @NonNull Object... replacement
+
     ) {
+        super(caption, replacementHandler, replacement);
         this.commandSender = commandSender;
         this.currentChain = currentChain;
     }

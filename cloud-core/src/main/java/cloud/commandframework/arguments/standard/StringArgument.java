@@ -439,13 +439,7 @@ public final class StringArgument<C> extends CommandArgument<C, String> {
                 final @NonNull StringMode stringMode,
                 final @NonNull CommandContext<?> context
         ) {
-            super(
-                    StringParser.class,
-                    context,
-                    StandardCaptionKeys.ARGUMENT_PARSE_FAILURE_STRING,
-                    CaptionVariable.of("input", input),
-                    CaptionVariable.of("stringMode", stringMode.name())
-            );
+            super(StringParser.class, context, StandardCaptionKeys.ARGUMENT_PARSE_FAILURE_STRING, input, stringMode.name());
             this.input = input;
             this.stringMode = stringMode;
         }

@@ -24,6 +24,8 @@
 package cloud.commandframework.exceptions;
 
 import cloud.commandframework.arguments.CommandArgument;
+import cloud.commandframework.captions.CaptionVariableReplacementHandler;
+import cloud.commandframework.captions.StandardCaptionKeys;
 import java.util.List;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
@@ -46,9 +48,10 @@ public class InvalidSyntaxException extends CommandParseException {
     public InvalidSyntaxException(
             final @NonNull String correctSyntax,
             final @NonNull Object commandSender,
-            final @NonNull List<@NonNull CommandArgument<?, ?>> currentChain
+            final @NonNull List<@NonNull CommandArgument<?, ?>> currentChain,
+            final @NonNull CaptionVariableReplacementHandler replacementHandler
     ) {
-        super(commandSender, currentChain);
+        super(commandSender, currentChain, StandardCaptionKeys.INVALID_COMMAND_SYNTAX, replacementHandler, correctSyntax);
         this.correctSyntax = correctSyntax;
     }
 
@@ -59,12 +62,6 @@ public class InvalidSyntaxException extends CommandParseException {
      */
     public @NonNull String getCorrectSyntax() {
         return this.correctSyntax;
-    }
-
-
-    @Override
-    public final String getMessage() {
-        return String.format("Invalid command syntax. Correct syntax is: %s", this.correctSyntax);
     }
 
 }

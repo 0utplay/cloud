@@ -223,8 +223,8 @@ public class EnumArgument<C, E extends Enum<E>> extends CommandArgument<C, E> {
                     EnumParser.class,
                     context,
                     StandardCaptionKeys.ARGUMENT_PARSE_FAILURE_ENUM,
-                    CaptionVariable.of("input", input),
-                    CaptionVariable.of("acceptableValues", join(enumClass))
+                    input,
+                    join(enumClass)
             );
             this.input = input;
             this.enumClass = enumClass;

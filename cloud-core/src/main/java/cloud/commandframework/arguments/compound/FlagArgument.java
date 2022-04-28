@@ -492,13 +492,7 @@ public final class FlagArgument<C> extends CommandArgument<C, Object> {
                 final @NonNull FailureReason failureReason,
                 final @NonNull CommandContext<?> context
         ) {
-            super(
-                    FlagArgument.FlagArgumentParser.class,
-                    context,
-                    failureReason.getCaption(),
-                    CaptionVariable.of("input", input),
-                    CaptionVariable.of("flag", input)
-            );
+            super(FlagArgument.FlagArgumentParser.class, context, failureReason.getCaption(), input, input);
             this.input = input;
         }
 

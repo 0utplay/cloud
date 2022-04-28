@@ -52,13 +52,13 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  */
 public final class CommandContext<C> {
 
-    private final CaptionVariableReplacementHandler captionVariableReplacementHandler;
+    public final CaptionVariableReplacementHandler captionVariableReplacementHandler;
     private final Map<CommandArgument<C, ?>, ArgumentTiming> argumentTimings = new HashMap<>();
     private final FlagContext flagContext = FlagContext.create();
     private final Map<CloudKey<?>, Object> internalStorage = new HashMap<>();
     private final C commandSender;
     private final boolean suggestions;
-    private final CaptionRegistry<C> captionRegistry;
+    //private final CaptionRegistry<C> captionRegistry;
     private final CommandManager<C> commandManager;
 
     private CommandArgument<C, ?> currentArgument = null;
@@ -102,7 +102,7 @@ public final class CommandContext<C> {
     ) {
         this.commandSender = commandSender;
         this.suggestions = suggestions;
-        this.captionRegistry = captionRegistry;
+        //this.captionRegistry = captionRegistry;
         this.captionVariableReplacementHandler = new SimpleCaptionVariableReplacementHandler();
         this.commandManager = null;
     }
@@ -123,7 +123,7 @@ public final class CommandContext<C> {
         this.commandSender = commandSender;
         this.suggestions = suggestions;
         this.commandManager = commandManager;
-        this.captionRegistry = commandManager.getCaptionRegistry();
+        //this.captionRegistry = commandManager.getCaptionRegistry();
         this.captionVariableReplacementHandler = commandManager.captionVariableReplacementHandler();
     }
 
@@ -138,10 +138,7 @@ public final class CommandContext<C> {
             final @NonNull Caption caption,
             final @NonNull CaptionVariable... variables
     ) {
-        return this.captionVariableReplacementHandler.replaceVariables(
-                this.captionRegistry.getCaption(caption, this.commandSender),
-                variables
-        );
+        return caption.getKey();
     }
 
     /**
@@ -627,7 +624,6 @@ public final class CommandContext<C> {
         }
         return this.commandManager.parameterInjectorRegistry().getInjectable(clazz, this, AnnotationAccessor.empty());
     }
-
 
     /**
      * Used to track performance metrics related to command parsing. This is attached

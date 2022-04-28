@@ -32,14 +32,10 @@ public final class SimpleCaptionVariableReplacementHandler implements CaptionVar
 
     @Override
     public @NonNull String replaceVariables(
-            final @NonNull String string,
-            final @NonNull CaptionVariable... variables
+            final @NonNull Caption string,
+            final @NonNull Object... variables
     ) {
-        String replacedString = string;
-        for (final CaptionVariable variable : variables) {
-            replacedString = replacedString.replace(String.format("{%s}", variable.getKey()), variable.getValue());
-        }
-        return replacedString;
+        return string.getKey();
     }
 
 }

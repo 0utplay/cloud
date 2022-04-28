@@ -25,6 +25,8 @@ package cloud.commandframework.exceptions;
 
 import cloud.commandframework.Command;
 import cloud.commandframework.arguments.CommandArgument;
+import cloud.commandframework.captions.CaptionVariableReplacementHandler;
+import cloud.commandframework.captions.StandardCaptionKeys;
 import cloud.commandframework.permission.CommandPermission;
 import java.util.List;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -49,15 +51,17 @@ public class NoPermissionException extends CommandParseException {
     public NoPermissionException(
             final @NonNull CommandPermission missingPermission,
             final @NonNull Object commandSender,
-            final @NonNull List<@NonNull CommandArgument<?, ?>> currentChain
+            final @NonNull List<@NonNull CommandArgument<?, ?>> currentChain,
+            final @NonNull CaptionVariableReplacementHandler replacementHandler
     ) {
-        super(commandSender, currentChain);
+        super(
+                commandSender,
+                currentChain,
+                StandardCaptionKeys.MISSING_COMMAND_PERMISSION,
+                replacementHandler,
+                missingPermission.toString()
+        );
         this.missingPermission = missingPermission;
-    }
-
-    @Override
-    public final String getMessage() {
-        return String.format("Missing permission '%s'", this.missingPermission);
     }
 
     /**
@@ -67,16 +71,6 @@ public class NoPermissionException extends CommandParseException {
      */
     public @NonNull String getMissingPermission() {
         return this.missingPermission.toString();
-    }
-
-    @Override
-    public final synchronized Throwable fillInStackTrace() {
-        return this;
-    }
-
-    @Override
-    public final synchronized Throwable initCause(final Throwable cause) {
-        return this;
     }
 
 }
