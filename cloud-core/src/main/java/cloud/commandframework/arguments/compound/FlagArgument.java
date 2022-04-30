@@ -478,6 +478,7 @@ public final class FlagArgument<C> extends CommandArgument<C, Object> {
     public static final class FlagParseException extends ParserException {
 
         private static final long serialVersionUID = -7725389394142868549L;
+        private final FailureReason failureReason;
         private final String input;
 
         /**
@@ -493,6 +494,7 @@ public final class FlagArgument<C> extends CommandArgument<C, Object> {
                 final @NonNull CommandContext<?> context
         ) {
             super(FlagArgument.FlagArgumentParser.class, context, failureReason.getCaption(), input, input);
+            this.failureReason = failureReason;
             this.input = input;
         }
 
@@ -503,6 +505,10 @@ public final class FlagArgument<C> extends CommandArgument<C, Object> {
          */
         public String getInput() {
             return this.input;
+        }
+
+        public FailureReason getFailureReason() {
+            return this.failureReason;
         }
 
     }
