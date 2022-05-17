@@ -28,7 +28,7 @@ versions:
   jda: 4.2.1_257
 
   # irc
-  pircbotx: 12f5639c5d
+  pircbotx: master-SNAPSHOT
 
   # minecraft
   guava: 21.0-jre
