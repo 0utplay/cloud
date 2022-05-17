@@ -195,7 +195,7 @@ public final class BooleanArgument<C> extends CommandArgument<C, Boolean> {
                 return ArgumentParseResult.failure(new BooleanParseException(input, false, commandContext));
             }
 
-            final String uppercaseInput = input.toUpperCase();
+            final String uppercaseInput = input.toLowerCase();
 
             if (LIBERAL_TRUE.contains(uppercaseInput)) {
                 inputQueue.remove();
