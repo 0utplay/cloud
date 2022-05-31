@@ -133,6 +133,20 @@ public final class CommandTree<C> {
             final @NonNull CommandContext<C> commandContext,
             final @NonNull Queue<@NonNull String> args
     ) {
+        // Special case for empty command trees.
+        if (this.internalTree.isLeaf() && this.internalTree.value == null) {
+            return Pair.of(
+                    null,
+                    new NoSuchCommandException(
+                            commandContext.getSender(),
+                            new ArrayList<>(),
+                            this.stringOrEmpty(args.peek()),
+                            StandardCaptionKeys.NO_SUCH_COMMAND,
+                            commandContext.captionVariableReplacementHandler
+                    )
+            );
+        }
+
         final Pair<@Nullable Command<C>, @Nullable Exception> pair = this.parseCommand(
                 new ArrayList<>(),
                 commandContext,
@@ -851,8 +865,8 @@ public final class CommandTree<C> {
         }
 
         // List of child nodes that are static arguments, with fixed values
-        @SuppressWarnings({ "rawtypes", "unchecked" })
-        final List<Node<StaticArgument<?>>> childStaticArguments = node.children.stream()
+        @SuppressWarnings({"rawtypes", "unchecked"}) final List<Node<StaticArgument<?>>> childStaticArguments = node.children
+                .stream()
                 .filter(n -> n.getValue() instanceof StaticArgument)
                 .map(n -> (Node<StaticArgument<?>>) ((Node) n))
                 .collect(Collectors.toList());

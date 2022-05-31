@@ -33,6 +33,7 @@ import cloud.commandframework.exceptions.parsing.NumberParseException;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Queue;
 import java.util.Set;
 import java.util.TreeSet;
@@ -337,6 +338,7 @@ public final class IntegerArgument<C> extends CommandArgument<C, Integer> {
     }
 
 
+    @SuppressWarnings("serial")
     public static final class IntegerParseException extends NumberParseException {
 
         private static final long serialVersionUID = -6933923056628373853L;
@@ -392,6 +394,23 @@ public final class IntegerArgument<C> extends CommandArgument<C, Integer> {
         @Override
         public @NonNull String getNumberType() {
             return "integer";
+        }
+
+        @Override
+        public boolean equals(final Object o) {
+            if (this == o) {
+                return true;
+            }
+            if (o == null || this.getClass() != o.getClass()) {
+                return false;
+            }
+            final IntegerParseException that = (IntegerParseException) o;
+            return this.parser.equals(that.parser);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(this.parser);
         }
 
     }

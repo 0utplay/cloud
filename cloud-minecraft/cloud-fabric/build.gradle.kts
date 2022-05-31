@@ -1,8 +1,8 @@
 import net.fabricmc.loom.task.AbstractRunTask
 
 plugins {
-    id("cloud.base-conventions")
     id("quiet-fabric-loom") version "0.11-SNAPSHOT"
+    id("cloud.base-conventions")
 }
 
 tasks {

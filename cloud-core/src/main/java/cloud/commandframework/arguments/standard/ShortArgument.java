@@ -31,6 +31,7 @@ import cloud.commandframework.context.CommandContext;
 import cloud.commandframework.exceptions.parsing.NoInputProvidedException;
 import cloud.commandframework.exceptions.parsing.NumberParseException;
 import java.util.List;
+import java.util.Objects;
 import java.util.Queue;
 import java.util.function.BiFunction;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -279,6 +280,7 @@ public final class ShortArgument<C> extends CommandArgument<C, Short> {
     }
 
 
+    @SuppressWarnings("serial")
     public static final class ShortParseException extends NumberParseException {
 
         private static final long serialVersionUID = -478674263339091032L;
@@ -334,6 +336,23 @@ public final class ShortArgument<C> extends CommandArgument<C, Short> {
         @Override
         public @NonNull String getNumberType() {
             return "short";
+        }
+
+        @Override
+        public boolean equals(final Object o) {
+            if (this == o) {
+                return true;
+            }
+            if (o == null || this.getClass() != o.getClass()) {
+                return false;
+            }
+            final ShortParseException that = (ShortParseException) o;
+            return this.parser.equals(that.parser);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(this.parser);
         }
 
     }

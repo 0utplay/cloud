@@ -21,7 +21,17 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 //
-/**
- * Command tests
- */
-package cloud.commandframework;
+package cloud.commandframework.arguments.standard;
+
+import java.util.Arrays;
+import java.util.LinkedList;
+import org.checkerframework.checker.nullness.qual.NonNull;
+
+final class ArgumentTestHelper {
+
+    static @NonNull LinkedList<@NonNull String> linkedListOf(
+            final @NonNull String... strings
+    ) {
+        return new LinkedList<>(Arrays.asList(strings));
+    }
+}

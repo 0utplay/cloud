@@ -25,12 +25,10 @@ package cloud.commandframework.arguments.preprocessor;
 
 import cloud.commandframework.arguments.parser.ArgumentParseResult;
 import cloud.commandframework.captions.Caption;
-import cloud.commandframework.captions.CaptionVariable;
 import cloud.commandframework.captions.StandardCaptionKeys;
 import cloud.commandframework.context.CommandContext;
 import cloud.commandframework.exceptions.CommandException;
 import cloud.commandframework.exceptions.parsing.NoInputProvidedException;
-import cloud.commandframework.exceptions.parsing.ParserException;
 import java.util.Queue;
 import java.util.function.BiFunction;
 import java.util.function.Predicate;

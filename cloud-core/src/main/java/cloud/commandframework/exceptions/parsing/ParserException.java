@@ -24,10 +24,8 @@
 package cloud.commandframework.exceptions.parsing;
 
 import cloud.commandframework.captions.Caption;
-import cloud.commandframework.captions.CaptionVariable;
 import cloud.commandframework.context.CommandContext;
 import cloud.commandframework.exceptions.CommandException;
-import java.util.Arrays;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 public class ParserException extends CommandException {

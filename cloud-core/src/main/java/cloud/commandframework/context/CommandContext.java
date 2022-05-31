@@ -50,7 +50,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  *
  * @param <C> Command sender type
  */
-public final class CommandContext<C> {
+public class CommandContext<C> {
 
     public final CaptionVariableReplacementHandler captionVariableReplacementHandler;
     private final Map<CommandArgument<C, ?>, ArgumentTiming> argumentTimings = new HashMap<>();
@@ -433,7 +433,7 @@ public final class CommandContext<C> {
      * if there's no value associated with the given argument
      *
      * @param keyHolder Holder of the identifying key
-     * @param <T>      Argument type
+     * @param <T>       Argument type
      * @return Stored value
      * @throws NullPointerException If no such value is stored
      */
@@ -446,7 +446,7 @@ public final class CommandContext<C> {
      * if there's no value associated with the given argument
      *
      * @param keyHolder Holder of the identifying key
-     * @param <T>      Argument type
+     * @param <T>       Argument type
      * @return Stored value
      * @throws NullPointerException If no such value is stored
      * @since 1.4.0

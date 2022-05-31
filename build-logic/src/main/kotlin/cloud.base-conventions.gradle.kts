@@ -1,13 +1,10 @@
-import gradle.kotlin.dsl.accessors._4cd629378ad4e1190c2a7fb4bcc7792f.indra
 import net.kyori.indra.repository.sonatypeSnapshots
-import org.cadixdev.gradle.licenser.header.HeaderStyle
-import org.jetbrains.dokka.pages.SimpleAttr.Companion.header
 
 plugins {
     id("net.kyori.indra")
     id("net.kyori.indra.checkstyle")
-    id("net.kyori.indra.license-header")
-   // id("net.ltgt.errorprone")
+    //id("com.diffplug.spotless")
+    //id("net.ltgt.errorprone")
 }
 
 indra {
@@ -22,19 +19,46 @@ indra {
 
 /* Disable checkstyle on tests */
 project.gradle.startParameter.excludedTaskNames.add("checkstyleTest")
-
+/*
 tasks {
     withType<JavaCompile> {
+        options.errorprone {
+            /* These are just annoying */
+            disable(
+                    "JdkObsolete",
+                    "FutureReturnValueIgnored",
+                    "ImmutableEnumChecker",
+                    "StringSplitter",
+                    "EqualsGetClass",
+                    "CatchAndPrintStackTrace",
+                    "InlineMeSuggester",
+            )
+        }
         options.compilerArgs.addAll(listOf("-Xlint:-processing", "-Werror"))
     }
 }
 
-license {
-    header(rootProject.file("HEADER"))
-    style["java"] = HeaderStyle.DOUBLE_SLASH.format
-    style["kt"] = HeaderStyle.DOUBLE_SLASH.format
+spotless {
+    java {
+        licenseHeaderFile(rootProject.file("HEADER"))
+        importOrderFile(rootProject.file(".spotless/cloud.importorder"))
+        indentWithSpaces(4)
+        trimTrailingWhitespace()
+        endWithNewline()
+    }
+    kotlin {
+        licenseHeaderFile(rootProject.file("HEADER"))
+        indentWithSpaces(4)
+        trimTrailingWhitespace()
+        endWithNewline()
+    }
+    format("configs") {
+        indentWithSpaces(2)
+        trimTrailingWhitespace()
+        endWithNewline()
+    }
 }
-
+*/
 repositories {
     mavenCentral()
     sonatypeSnapshots()
@@ -60,7 +84,7 @@ repositories {
         mavenContent { snapshotsOnly() }
     }
     /* The paper repository, used for cloud-paper */
-    maven("https://papermc.io/repo/repository/maven-public/")
+    maven("https://repo.papermc.io/repository/maven-public/")
     /* The NukkitX repository, used for cloud-cloudburst */
     maven("https://repo.nukkitx.com/maven-snapshots") {
         mavenContent { snapshotsOnly() }
@@ -84,8 +108,10 @@ repositories {
 dependencies {
     compileOnlyApi(libs.checkerQual)
     testImplementation(libs.jupiterEngine)
+    testImplementation(libs.jupiterParams)
     testImplementation(libs.mockitoCore)
     testImplementation(libs.mockitoKotlin)
+    testImplementation(libs.mockitoJupiter)
     testImplementation(libs.truth)
     testImplementation(libs.truthJava8)
     //errorprone(libs.errorproneCore)

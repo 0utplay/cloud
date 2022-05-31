@@ -5,7 +5,6 @@ plugins {
     id("cloud.base-conventions")
     kotlin("jvm")
     id("org.jetbrains.dokka")
-    id("org.jlleitschuh.gradle.ktlint")
 }
 
 kotlin {
@@ -39,7 +38,13 @@ tasks {
         }
     }
 }
-
+/*
+spotless {
+    kotlin {
+        ktlint()
+    }
+}
+*/
 kotlin {
     explicitApi()
 }

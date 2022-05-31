@@ -1,6 +1,6 @@
 plugins {
     `kotlin-dsl`
-    id("org.jlleitschuh.gradle.ktlint")
+    id("com.diffplug.spotless")
 }
 
 repositories {
@@ -12,11 +12,17 @@ dependencies {
     implementation(libs.indraPublishingSonatype)
     implementation(libs.gradleTestLogger)
     //implementation(libs.gradleErrorprone)
-    implementation(libs.licenser)
     implementation(libs.gradleKotlinJvm)
     implementation(libs.gradleDokka)
-    implementation(libs.gradleKtlint)
+    implementation(libs.spotless)
+    implementation(libs.revapi)
 
     // https://github.com/gradle/gradle/issues/15383#issuecomment-779893192
     implementation(files(libs.javaClass.superclass.protectionDomain.codeSource.location))
+}
+
+spotless {
+    kotlin {
+        ktlint()
+    }
 }
