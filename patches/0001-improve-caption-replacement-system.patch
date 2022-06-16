@@ -197,7 +197,7 @@ index fe18e821e1402ab1123436f590fc58112e979083..ac070405a08b784958684d14bef7a05d
              this.input = input;
          }
 diff --git a/cloud-core/src/main/java/cloud/commandframework/arguments/preprocessor/RegexPreprocessor.java b/cloud-core/src/main/java/cloud/commandframework/arguments/preprocessor/RegexPreprocessor.java
-index 6b574aa40e7dca5fd476228ced656120d0bf0994..72f7d53599146b3af4a2d4e2d98bdec152fea10b 100644
+index 6b574aa40e7dca5fd476228ced656120d0bf0994..a01a8220d7c495024c39d07c40999dcde6c9bf0c 100644
 --- a/cloud-core/src/main/java/cloud/commandframework/arguments/preprocessor/RegexPreprocessor.java
 +++ b/cloud-core/src/main/java/cloud/commandframework/arguments/preprocessor/RegexPreprocessor.java
 @@ -116,7 +116,7 @@ public final class RegexPreprocessor<C> implements BiFunction<@NonNull CommandCo
@@ -217,38 +217,16 @@ index 6b574aa40e7dca5fd476228ced656120d0bf0994..72f7d53599146b3af4a2d4e2d98bdec1
              this.pattern = pattern;
              this.failedString = failedString;
              this.failureCaption = failureCaption;
-@@ -138,17 +139,20 @@ public final class RegexPreprocessor<C> implements BiFunction<@NonNull CommandCo
+@@ -138,6 +139,9 @@ public final class RegexPreprocessor<C> implements BiFunction<@NonNull CommandCo
  
          @Override
          public String getMessage() {
--            return this.commandContext.formatMessage(
--                    this.failureCaption,
--                    CaptionVariable.of(
--                            "input",
--                            this.failedString
--                    ),
--                    CaptionVariable.of(
--                            "pattern",
--                            this.pattern
--                    )
--            );
 +            // cloudnet start - better captions
-+            return super.getMessage();
-+            //return this.commandContext.formatMessage(
-+            //        this.failureCaption,
-+            //        CaptionVariable.of(
-+            //                 "input",
-+            //                this.failedString
-+            //        ),
-+            //         CaptionVariable.of(
-+            //                "pattern",
-+            //                this.pattern
-+            //        )
-+            //);
++            if (true) return super.getMessage();
 +            // cloudnet end
-         }
- 
-         /**
+             return this.commandContext.formatMessage(
+                     this.failureCaption,
+                     CaptionVariable.of(
 diff --git a/cloud-core/src/main/java/cloud/commandframework/arguments/standard/BooleanArgument.java b/cloud-core/src/main/java/cloud/commandframework/arguments/standard/BooleanArgument.java
 index 7118a14c25a5c0b767cca66fc801f777e051b75f..4a6af24a04c00965dc57c76bcb6189b009939e61 100644
 --- a/cloud-core/src/main/java/cloud/commandframework/arguments/standard/BooleanArgument.java
@@ -350,50 +328,21 @@ index bf2d1e791284d5c8341604a5f33358156a3fd4b9..99e945d3264e7f25d2ed9f5f0073fc89
              this.input = input;
          }
 diff --git a/cloud-core/src/main/java/cloud/commandframework/captions/CaptionVariableReplacementHandler.java b/cloud-core/src/main/java/cloud/commandframework/captions/CaptionVariableReplacementHandler.java
-index d37b59c6557c6bf0f2da2b0270225618e4bac0bd..22087b817e828777e65b839b7e33db27e5ec0c79 100644
+index d37b59c6557c6bf0f2da2b0270225618e4bac0bd..c2f515d6c75f4941d74d35346ede262233fcbd5b 100644
 --- a/cloud-core/src/main/java/cloud/commandframework/captions/CaptionVariableReplacementHandler.java
 +++ b/cloud-core/src/main/java/cloud/commandframework/captions/CaptionVariableReplacementHandler.java
-@@ -32,12 +32,15 @@ import org.checkerframework.checker.nullness.qual.NonNull;
- @API(status = API.Status.STABLE)
- public interface CaptionVariableReplacementHandler {
- 
-+    // cloudnet start - don't wrap caption variables
-     /**
-      * Replace the variables in a message and return the result
-      *
--     * @param string    Message to replace variables in
-+     * @param caption   caption to replace variables of
+@@ -39,5 +39,12 @@ public interface CaptionVariableReplacementHandler {
       * @param variables Variables
       * @return Transformed message
       */
 -    @NonNull String replaceVariables(@NonNull String string, @NonNull CaptionVariable... variables);
-+    // @NonNull String replaceVariables(@NonNull String string, @NonNull CaptionVariable... variables);
-+    @NonNull String replaceVariables(@NonNull Caption caption, @NonNull Object... variables);
-+    // cloudnet end
- }
-diff --git a/cloud-core/src/main/java/cloud/commandframework/captions/SimpleCaptionVariableReplacementHandler.java b/cloud-core/src/main/java/cloud/commandframework/captions/SimpleCaptionVariableReplacementHandler.java
-index cbf9f0fc788d8d1014947299e2611788d1a07943..8974fb4b087e6c1ba549927cc1d2ca129987a0fe 100644
---- a/cloud-core/src/main/java/cloud/commandframework/captions/SimpleCaptionVariableReplacementHandler.java
-+++ b/cloud-core/src/main/java/cloud/commandframework/captions/SimpleCaptionVariableReplacementHandler.java
-@@ -32,6 +32,8 @@ import org.checkerframework.checker.nullness.qual.NonNull;
- @API(status = API.Status.STABLE)
- public final class SimpleCaptionVariableReplacementHandler implements CaptionVariableReplacementHandler {
- 
-+    // cloudnet start - better captions
-+    /*
-     @Override
-     public @NonNull String replaceVariables(
-             final @NonNull String string,
-@@ -42,5 +44,11 @@ public final class SimpleCaptionVariableReplacementHandler implements CaptionVar
-             replacedString = replacedString.replace(String.format("{%s}", variable.getKey()), variable.getValue());
-         }
-         return replacedString;
-+    }*/
-+
-+    @Override
-+    public @NonNull String replaceVariables(@NonNull final Caption caption, final @NonNull Object... variables) {
++    // cloudnet start - don't wrap caption variables
++    default @NonNull String replaceVariables(@NonNull String string, @NonNull CaptionVariable... variables) {
++        return string;
++    }
++    default @NonNull String replaceVariables(@NonNull Caption caption, @NonNull Object... variables) {
 +        return caption.getKey();
-     }
++    }
 +    // cloudnet end
  }
 diff --git a/cloud-core/src/main/java/cloud/commandframework/captions/StandardCaptionKeys.java b/cloud-core/src/main/java/cloud/commandframework/captions/StandardCaptionKeys.java
@@ -448,7 +397,7 @@ index 77d9bafc80de0c394602b97986ae47c5919b9a8e..07bf16880deca2678718bf6630de4117
      }
  
 diff --git a/cloud-core/src/main/java/cloud/commandframework/context/CommandContext.java b/cloud-core/src/main/java/cloud/commandframework/context/CommandContext.java
-index 1ba10551c56f5f910775c4ef84bb58e7c56bdeef..fc31340dea883a99a9116c3c310209ad297f059d 100644
+index 1ba10551c56f5f910775c4ef84bb58e7c56bdeef..69404ae44849695315f3e6c0202511e41230a5d0 100644
 --- a/cloud-core/src/main/java/cloud/commandframework/context/CommandContext.java
 +++ b/cloud-core/src/main/java/cloud/commandframework/context/CommandContext.java
 @@ -52,6 +52,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
@@ -459,33 +408,26 @@ index 1ba10551c56f5f910775c4ef84bb58e7c56bdeef..fc31340dea883a99a9116c3c310209ad
  public class CommandContext<C> {
  
      private final CaptionVariableReplacementHandler captionVariableReplacementHandler;
-@@ -144,10 +145,17 @@ public class CommandContext<C> {
+@@ -144,6 +145,13 @@ public class CommandContext<C> {
              final @NonNull Caption caption,
              final @NonNull CaptionVariable... variables
      ) {
 +        // cloudnet start - better captions
-         return this.captionVariableReplacementHandler.replaceVariables(
--                this.captionRegistry.getCaption(caption, this.commandSender),
--                variables
--        );
++        if (true) return this.captionVariableReplacementHandler.replaceVariables(
 +                caption,
 +                java.util.Arrays.stream(variables)
 +                        .map(cloud.commandframework.captions.CaptionVariable::getValue)
 +                        .toArray());
-+        //return this.captionVariableReplacementHandler.replaceVariables(
-+        //        this.captionRegistry.getCaption(caption, this.commandSender),
-+        //        variables
-+        //);
 +        // cloudnet end
-     }
- 
-     /**
+         return this.captionVariableReplacementHandler.replaceVariables(
+                 this.captionRegistry.getCaption(caption, this.commandSender),
+                 variables
 @@ -653,6 +661,11 @@ public class CommandContext<C> {
          return this.commandManager.parameterInjectorRegistry().getInjectable(clazz, this, AnnotationAccessor.empty());
      }
  
 +    // cloudnet start - expose caption replacement handler
-+    public CaptionVariableReplacementHandler getCaptionVariableReplacementHandler() {
++    public final @NonNull CaptionVariableReplacementHandler getCaptionVariableReplacementHandler() {
 +        return this.captionVariableReplacementHandler;
 +    }
 +    // cloudnet end
@@ -570,7 +512,7 @@ index 938f01dc2d72f901605f940a65de759cf2f1b788..75580cc111d49568c71ad73c21c742ee
          this.currentChain = currentChain;
      }
 diff --git a/cloud-core/src/main/java/cloud/commandframework/exceptions/InvalidCommandSenderException.java b/cloud-core/src/main/java/cloud/commandframework/exceptions/InvalidCommandSenderException.java
-index 1d3b6f6818e6fcb9c40aaf88a53574ec323a9038..2964b06f8b0470dfcac5964143caefebc58d6256 100644
+index 1d3b6f6818e6fcb9c40aaf88a53574ec323a9038..bea41c0f63f105daed847b6d450aa9f66e203cfc 100644
 --- a/cloud-core/src/main/java/cloud/commandframework/exceptions/InvalidCommandSenderException.java
 +++ b/cloud-core/src/main/java/cloud/commandframework/exceptions/InvalidCommandSenderException.java
 @@ -52,9 +52,12 @@ public final class InvalidCommandSenderException extends CommandParseException {
@@ -604,28 +546,18 @@ index 1d3b6f6818e6fcb9c40aaf88a53574ec323a9038..2964b06f8b0470dfcac5964143caefeb
          this.requiredSender = requiredSender;
          this.command = command;
      }
-@@ -89,11 +96,14 @@ public final class InvalidCommandSenderException extends CommandParseException {
+@@ -89,6 +96,9 @@ public final class InvalidCommandSenderException extends CommandParseException {
  
      @Override
      public String getMessage() {
--        return String.format(
--                "%s is not allowed to execute that command. Must be of type %s",
--                getCommandSender().getClass().getSimpleName(),
--                this.requiredSender.getSimpleName()
--        );
 +        // cloudnet start - better captions
-+        return super.getMessage();
-+        //return String.format(
-+        //        "%s is not allowed to execute that command. Must be of type %s",
-+        //        getCommandSender().getClass().getSimpleName(),
-+        //        this.requiredSender.getSimpleName()
-+        //);
++        if (true) return super.getMessage();
 +        // cloudnet end
-     }
- 
-     /**
+         return String.format(
+                 "%s is not allowed to execute that command. Must be of type %s",
+                 getCommandSender().getClass().getSimpleName(),
 diff --git a/cloud-core/src/main/java/cloud/commandframework/exceptions/InvalidSyntaxException.java b/cloud-core/src/main/java/cloud/commandframework/exceptions/InvalidSyntaxException.java
-index 3accd115864382ed37771dda53d5517a57a037a6..56918cd115e841e9e0355252cf9179ba5ca70f9d 100644
+index 3accd115864382ed37771dda53d5517a57a037a6..5f5855fb1f46f4da9b0a50af0e4b5346bdf0433d 100644
 --- a/cloud-core/src/main/java/cloud/commandframework/exceptions/InvalidSyntaxException.java
 +++ b/cloud-core/src/main/java/cloud/commandframework/exceptions/InvalidSyntaxException.java
 @@ -49,9 +49,13 @@ public class InvalidSyntaxException extends CommandParseException {
@@ -648,18 +580,17 @@ index 3accd115864382ed37771dda53d5517a57a037a6..56918cd115e841e9e0355252cf9179ba
  
      @Override
      public final String getMessage() {
--        return String.format("Invalid command syntax. Correct syntax is: %s", this.correctSyntax);
 +        // cloudnet start - better captions
-+        return super.getMessage();
-+        //return String.format("Invalid command syntax. Correct syntax is: %s", this.correctSyntax);
++        if (true) return super.getMessage();
 +        // cloudnet end
+         return String.format("Invalid command syntax. Correct syntax is: %s", this.correctSyntax);
      }
  }
 diff --git a/cloud-core/src/main/java/cloud/commandframework/exceptions/NoPermissionException.java b/cloud-core/src/main/java/cloud/commandframework/exceptions/NoPermissionException.java
-index d56e7a17d78eacbeef8da9cda46c1b032f5c5a17..511bbfd2209db640f0776217d245d67a4b40f2bb 100644
+index d56e7a17d78eacbeef8da9cda46c1b032f5c5a17..7a79069afdb84c1d6541bb2bb07b4c77a5599636 100644
 --- a/cloud-core/src/main/java/cloud/commandframework/exceptions/NoPermissionException.java
 +++ b/cloud-core/src/main/java/cloud/commandframework/exceptions/NoPermissionException.java
-@@ -52,15 +52,22 @@ public class NoPermissionException extends CommandParseException {
+@@ -52,14 +52,21 @@ public class NoPermissionException extends CommandParseException {
      public NoPermissionException(
              final @NonNull CommandPermission missingPermission,
              final @NonNull Object commandSender,
@@ -677,19 +608,17 @@ index d56e7a17d78eacbeef8da9cda46c1b032f5c5a17..511bbfd2209db640f0776217d245d67a
  
      @Override
      public final String getMessage() {
--        return String.format("Missing permission '%s'", this.missingPermission);
 +        // cloudnet start - better captions
-+        return super.getMessage();
-+        //return String.format("Missing permission '%s'", this.missingPermission);
++        if (true) return super.getMessage();
 +        // cloudnet end
+         return String.format("Missing permission '%s'", this.missingPermission);
      }
  
-     /**
 diff --git a/cloud-core/src/main/java/cloud/commandframework/exceptions/NoSuchCommandException.java b/cloud-core/src/main/java/cloud/commandframework/exceptions/NoSuchCommandException.java
-index a7599e63d7fcbac6b3d041f34f67791c91fe3148..25a64456f1cddd5148441836002f8940bb8ae7cd 100644
+index a7599e63d7fcbac6b3d041f34f67791c91fe3148..80f320133eff9520f6e8a50ebfb5b40dc8e907e1 100644
 --- a/cloud-core/src/main/java/cloud/commandframework/exceptions/NoSuchCommandException.java
 +++ b/cloud-core/src/main/java/cloud/commandframework/exceptions/NoSuchCommandException.java
-@@ -50,23 +50,30 @@ public final class NoSuchCommandException extends CommandParseException {
+@@ -50,15 +50,22 @@ public final class NoSuchCommandException extends CommandParseException {
      public NoSuchCommandException(
              final @NonNull Object commandSender,
              final @NonNull List<CommandArgument<?, ?>> currentChain,
@@ -708,28 +637,12 @@ index a7599e63d7fcbac6b3d041f34f67791c91fe3148..25a64456f1cddd5148441836002f8940
  
      @Override
      public String getMessage() {
--        final StringBuilder builder = new StringBuilder();
--        for (final CommandArgument<?, ?> commandArgument : this.getCurrentChain()) {
--            if (commandArgument == null) {
--                continue;
--            }
--            builder.append(" ").append(commandArgument.getName());
--        }
--        return String.format("Unrecognized command input '%s' following chain%s", this.suppliedCommand, builder.toString());
 +        // cloudnet start - better captions
-+        return super.getMessage();
-+        //final StringBuilder builder = new StringBuilder();
-+        //for (final CommandArgument<?, ?> commandArgument : this.getCurrentChain()) {
-+        //     if (commandArgument == null) {
-+        //        continue;
-+        //     }
-+        //    builder.append(" ").append(commandArgument.getName());
-+        //}
-+        //return String.format("Unrecognized command input '%s' following chain%s", this.suppliedCommand, builder.toString());
++        if (true) return super.getMessage();
 +        // cloudnet end
-     }
- 
-     /**
+         final StringBuilder builder = new StringBuilder();
+         for (final CommandArgument<?, ?> commandArgument : this.getCurrentChain()) {
+             if (commandArgument == null) {
 diff --git a/cloud-core/src/main/java/cloud/commandframework/exceptions/parsing/NoInputProvidedException.java b/cloud-core/src/main/java/cloud/commandframework/exceptions/parsing/NoInputProvidedException.java
 index 90be4ccfaaf944cfc06e3662f90963efa9fe388a..b57b9494c43a4579a9d0d02d84cc87a7bf2046dc 100644
 --- a/cloud-core/src/main/java/cloud/commandframework/exceptions/parsing/NoInputProvidedException.java
@@ -765,7 +678,7 @@ index 9b3210c869d65dc66ebdd195a5886be4cbf3910f..014f17e2d4ffb4e0c0e173642dcafb11
          this.input = input;
          this.min = min;
 diff --git a/cloud-core/src/main/java/cloud/commandframework/exceptions/parsing/ParserException.java b/cloud-core/src/main/java/cloud/commandframework/exceptions/parsing/ParserException.java
-index 8e4ae370d2dd05ce436d7dcd18976fcd5630ad8e..2dd2071fd7334e9e201a1657365c9354eb82de75 100644
+index 8e4ae370d2dd05ce436d7dcd18976fcd5630ad8e..3420a6f08e7d14117e944a939ce960a66e21e0d7 100644
 --- a/cloud-core/src/main/java/cloud/commandframework/exceptions/parsing/ParserException.java
 +++ b/cloud-core/src/main/java/cloud/commandframework/exceptions/parsing/ParserException.java
 @@ -32,7 +32,9 @@ import org.checkerframework.checker.nullness.qual.NonNull;
@@ -779,7 +692,7 @@ index 8e4ae370d2dd05ce436d7dcd18976fcd5630ad8e..2dd2071fd7334e9e201a1657365c9354
  
      private static final long serialVersionUID = -4409795575435072170L;
      private final Class<?> argumentParser;
-@@ -46,18 +48,37 @@ public class ParserException extends IllegalArgumentException {
+@@ -46,14 +48,33 @@ public class ParserException extends IllegalArgumentException {
              final @NonNull Caption errorCaption,
              final @NonNull CaptionVariable... captionVariables
      ) {
@@ -807,20 +720,12 @@ index 8e4ae370d2dd05ce436d7dcd18976fcd5630ad8e..2dd2071fd7334e9e201a1657365c9354
 +
      @Override
      public final String getMessage() {
--        return this.context.formatMessage(
--                this.errorCaption,
--                this.captionVariables
--        );
 +        // cloudnet start - handled by super
-+        return super.getMessage();
-+        //return this.context.formatMessage(
-+        //        this.errorCaption,
-+        //        this.captionVariables
-+        //);
++        if (true) return super.getMessage();
 +        // cloudnet end
-     }
- 
-     /**
+         return this.context.formatMessage(
+                 this.errorCaption,
+                 this.captionVariables
 diff --git a/cloud-core/src/main/java/eu/cloudnetservice/CaptionedCommandException.java b/cloud-core/src/main/java/eu/cloudnetservice/CaptionedCommandException.java
 new file mode 100644
 index 0000000000000000000000000000000000000000..c34c1cd4a5b30135c30fddf59bcd0ecbc488d594
