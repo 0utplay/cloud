@@ -1,0 +1,1144 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: derklaro <git@derklaro.dev>
+Date: Thu, 16 Jun 2022 15:46:50 +0200
+Subject: [PATCH] improve caption replacement system
+
+
+diff --git a/cloud-core/src/main/java/cloud/commandframework/CommandTree.java b/cloud-core/src/main/java/cloud/commandframework/CommandTree.java
+index 8173324d11ddbe5f8bf2be9ab536abbaf3ef8965..dcc6a990a12b2bec74c70696e906a419855cc422 100644
+--- a/cloud-core/src/main/java/cloud/commandframework/CommandTree.java
++++ b/cloud-core/src/main/java/cloud/commandframework/CommandTree.java
+@@ -141,7 +141,11 @@ public final class CommandTree<C> {
+                     new NoSuchCommandException(
+                             commandContext.getSender(),
+                             new ArrayList<>(),
+-                            this.stringOrEmpty(args.peek())
++                            // cloudnet start - better captions
++                            this.stringOrEmpty(args.peek()),
++                            cloud.commandframework.captions.StandardCaptionKeys.NO_SUCH_COMMAND,
++                            commandContext.getCaptionVariableReplacementHandler()
++                            // cloudnet end
+                     )
+             );
+         }
+@@ -161,7 +165,10 @@ public final class CommandTree<C> {
+                         commandContext.getSender(),
+                         command.getSenderType().get(),
+                         new ArrayList<>(command.getArguments()),
+-                        command
++                        // cloudnet start - better captions
++                        command,
++                        commandContext.getCaptionVariableReplacementHandler()
++                        // cloudnet end
+                 ));
+             }
+         }
+@@ -184,7 +191,10 @@ public final class CommandTree<C> {
+                             .stream()
+                             .filter(node -> node.getValue() != null)
+                             .map(Node::getValue)
+-                            .collect(Collectors.toList())
++                            // cloudnet start
++                            .collect(Collectors.toList()),
++                    commandContext.getCaptionVariableReplacementHandler()
++                    // cloudnet end
+             ));
+         }
+ 
+@@ -213,7 +223,10 @@ public final class CommandTree<C> {
+                             .stream()
+                             .filter(node -> node.getValue() != null)
+                             .map(Node::getValue)
+-                            .collect(Collectors.toList())
++                            // cloudnet start - better captions
++                            .collect(Collectors.toList()),
++                            commandContext.getCaptionVariableReplacementHandler()
++                            // cloudnet end
+                     ));
+                 }
+             } else {
+@@ -225,7 +238,10 @@ public final class CommandTree<C> {
+                         .stream()
+                         .filter(node -> node.getValue() != null)
+                         .map(Node::getValue)
+-                        .collect(Collectors.toList())
++                        // cloudnet start - better captions
++                        .collect(Collectors.toList()),
++                        commandContext.getCaptionVariableReplacementHandler()
++                        // cloudnet end
+                 ));
+             }
+         } else {
+@@ -254,7 +270,11 @@ public final class CommandTree<C> {
+                 return Pair.of(null, new NoSuchCommandException(
+                         commandContext.getSender(),
+                         this.getChain(root).stream().map(Node::getValue).collect(Collectors.toList()),
+-                        this.stringOrEmpty(commandQueue.peek())
++                        // cloudnet start - better captions
++                        this.stringOrEmpty(commandQueue.peek()),
++                        cloud.commandframework.captions.StandardCaptionKeys.NO_SUCH_COMMAND,
++                        commandContext.getCaptionVariableReplacementHandler()
++                        // cloudnet end
+                 ));
+             }
+             /* If we couldn't match a child, check if there's a command attached and execute it */
+@@ -271,7 +291,10 @@ public final class CommandTree<C> {
+                                     .stream()
+                                     .filter(node -> node.getValue() != null)
+                                     .map(Node::getValue)
+-                                    .collect(Collectors.toList())
++                                    // cloudnet start - better captions
++                                    .collect(Collectors.toList()),
++                            commandContext.getCaptionVariableReplacementHandler()
++                            // cloudnet end
+                     ));
+                 }
+                 return Pair.of(root.getValue().getOwningCommand(), null);
+@@ -284,7 +307,10 @@ public final class CommandTree<C> {
+                     .stream()
+                     .filter(node -> node.getValue() != null)
+                     .map(Node::getValue)
+-                    .collect(Collectors.toList())
++                    // cloudnet start - better captions
++                    .collect(Collectors.toList()),
++                    commandContext.getCaptionVariableReplacementHandler()
++                    // cloudnet end
+             ));
+         }
+     }
+@@ -335,7 +361,10 @@ public final class CommandTree<C> {
+                                 .stream()
+                                 .filter(node -> node.getValue() != null)
+                                 .map(Node::getValue)
+-                                .collect(Collectors.toList())
++                                // cloudnet start - better captions
++                                .collect(Collectors.toList()),
++                        commandContext.getCaptionVariableReplacementHandler()
++                        // cloudnet end
+                 ));
+             }
+             if (child.getValue() != null) {
+@@ -371,7 +400,10 @@ public final class CommandTree<C> {
+                                                 .stream()
+                                                 .filter(node -> node.getValue() != null)
+                                                 .map(Node::getValue)
+-                                                .collect(Collectors.toList())
++                                                // cloudnet start - better captions
++                                                .collect(Collectors.toList()),
++                                        commandContext.getCaptionVariableReplacementHandler()
++                                        // cloudnet end
+                                 ));
+                             }
+                             return Pair.of(command, null);
+@@ -387,7 +419,10 @@ public final class CommandTree<C> {
+                                 .stream()
+                                 .filter(node -> node.getValue() != null)
+                                 .map(Node::getValue)
+-                                .collect(Collectors.toList())
++                                // cloudnet start - better captions
++                                .collect(Collectors.toList()),
++                                commandContext.getCaptionVariableReplacementHandler()
++                                // cloudnet end
+                         ));
+                     } else {
+                         /* The child is not a leaf, but may have an intermediary executor, attempt to use it */
+@@ -404,7 +439,10 @@ public final class CommandTree<C> {
+                                                 .stream()
+                                                 .filter(node -> node.getValue() != null)
+                                                 .map(Node::getValue)
+-                                                .collect(Collectors.toList())
++                                                // cloudnet start - better captions
++                                                .collect(Collectors.toList()),
++                                        commandContext.getCaptionVariableReplacementHandler()
++                                        // cloudnet end
+                                 ));
+                             }
+                             return Pair.of(command, null);
+@@ -417,7 +455,10 @@ public final class CommandTree<C> {
+                                 .stream()
+                                 .filter(node -> node.getValue() != null)
+                                 .map(Node::getValue)
+-                                .collect(Collectors.toList())
++                                // cloudnet start - better captions
++                                .collect(Collectors.toList()),
++                                commandContext.getCaptionVariableReplacementHandler()
++                                // cloudnet end
+                         ));
+                     }
+                 }
+@@ -455,7 +496,10 @@ public final class CommandTree<C> {
+                                     .stream()
+                                     .filter(node -> node.getValue() != null)
+                                     .map(Node::getValue)
+-                                    .collect(Collectors.toList())
++                                    // cloudnet start - better captions
++                                    .collect(Collectors.toList()),
++                                    commandContext.getCaptionVariableReplacementHandler()
++                                    // cloudnet end
+                             ));
+                         }
+                     } else {
+diff --git a/cloud-core/src/main/java/cloud/commandframework/arguments/compound/FlagArgument.java b/cloud-core/src/main/java/cloud/commandframework/arguments/compound/FlagArgument.java
+index fe18e821e1402ab1123436f590fc58112e979083..ac070405a08b784958684d14bef7a05da0baa7d7 100644
+--- a/cloud-core/src/main/java/cloud/commandframework/arguments/compound/FlagArgument.java
++++ b/cloud-core/src/main/java/cloud/commandframework/arguments/compound/FlagArgument.java
+@@ -500,8 +500,11 @@ public final class FlagArgument<C> extends CommandArgument<C, Object> {
+                     FlagArgument.FlagArgumentParser.class,
+                     context,
+                     failureReason.getCaption(),
+-                    CaptionVariable.of("input", input),
+-                    CaptionVariable.of("flag", input)
++                    // cloudnet start - better captions
++                    input, input
++                    //CaptionVariable.of("input", input),
++                    //CaptionVariable.of("flag", input)
++                    // cloudnet end
+             );
+             this.input = input;
+         }
+diff --git a/cloud-core/src/main/java/cloud/commandframework/arguments/preprocessor/RegexPreprocessor.java b/cloud-core/src/main/java/cloud/commandframework/arguments/preprocessor/RegexPreprocessor.java
+index 6b574aa40e7dca5fd476228ced656120d0bf0994..72f7d53599146b3af4a2d4e2d98bdec152fea10b 100644
+--- a/cloud-core/src/main/java/cloud/commandframework/arguments/preprocessor/RegexPreprocessor.java
++++ b/cloud-core/src/main/java/cloud/commandframework/arguments/preprocessor/RegexPreprocessor.java
+@@ -116,7 +116,7 @@ public final class RegexPreprocessor<C> implements BiFunction<@NonNull CommandCo
+      */
+     @SuppressWarnings("serial")
+     @API(status = API.Status.STABLE)
+-    public static final class RegexValidationException extends IllegalArgumentException {
++    public static final class RegexValidationException extends eu.cloudnetservice.CaptionedCommandException { // cloudnet
+ 
+         private static final long serialVersionUID = 747826566058072233L;
+         private final String pattern;
+@@ -130,6 +130,7 @@ public final class RegexPreprocessor<C> implements BiFunction<@NonNull CommandCo
+                 final @NonNull Caption failureCaption,
+                 final @NonNull CommandContext<?> commandContext
+         ) {
++            super(failureCaption, commandContext.getCaptionVariableReplacementHandler(), failedString, pattern); // cloudnet
+             this.pattern = pattern;
+             this.failedString = failedString;
+             this.failureCaption = failureCaption;
+@@ -138,17 +139,20 @@ public final class RegexPreprocessor<C> implements BiFunction<@NonNull CommandCo
+ 
+         @Override
+         public String getMessage() {
+-            return this.commandContext.formatMessage(
+-                    this.failureCaption,
+-                    CaptionVariable.of(
+-                            "input",
+-                            this.failedString
+-                    ),
+-                    CaptionVariable.of(
+-                            "pattern",
+-                            this.pattern
+-                    )
+-            );
++            // cloudnet start - better captions
++            return super.getMessage();
++            //return this.commandContext.formatMessage(
++            //        this.failureCaption,
++            //        CaptionVariable.of(
++            //                 "input",
++            //                this.failedString
++            //        ),
++            //         CaptionVariable.of(
++            //                "pattern",
++            //                this.pattern
++            //        )
++            //);
++            // cloudnet end
+         }
+ 
+         /**
+diff --git a/cloud-core/src/main/java/cloud/commandframework/arguments/standard/BooleanArgument.java b/cloud-core/src/main/java/cloud/commandframework/arguments/standard/BooleanArgument.java
+index 7118a14c25a5c0b767cca66fc801f777e051b75f..4a6af24a04c00965dc57c76bcb6189b009939e61 100644
+--- a/cloud-core/src/main/java/cloud/commandframework/arguments/standard/BooleanArgument.java
++++ b/cloud-core/src/main/java/cloud/commandframework/arguments/standard/BooleanArgument.java
+@@ -271,7 +271,10 @@ public final class BooleanArgument<C> extends CommandArgument<C, Boolean> {
+                     BooleanParser.class,
+                     context,
+                     StandardCaptionKeys.ARGUMENT_PARSE_FAILURE_BOOLEAN,
+-                    CaptionVariable.of("input", input)
++                    // cloudnet start - better captions
++                    input
++                    //CaptionVariable.of("input", input)
++                    // cloudnet end
+             );
+             this.input = input;
+             this.liberal = liberal;
+diff --git a/cloud-core/src/main/java/cloud/commandframework/arguments/standard/CharArgument.java b/cloud-core/src/main/java/cloud/commandframework/arguments/standard/CharArgument.java
+index 0d2c835e7bdeef5232ce6cab7c652ae3891e7ad5..37aa633abdc6c7ce7d881e5b1db3f283daafb717 100644
+--- a/cloud-core/src/main/java/cloud/commandframework/arguments/standard/CharArgument.java
++++ b/cloud-core/src/main/java/cloud/commandframework/arguments/standard/CharArgument.java
+@@ -176,7 +176,10 @@ public final class CharArgument<C> extends CommandArgument<C, Character> {
+                     CharacterParser.class,
+                     context,
+                     StandardCaptionKeys.ARGUMENT_PARSE_FAILURE_CHAR,
+-                    CaptionVariable.of("input", input)
++                    // cloudnet start - better captions
++                    input
++                    //CaptionVariable.of("input", input)
++                    // cloudnet end
+             );
+             this.input = input;
+         }
+diff --git a/cloud-core/src/main/java/cloud/commandframework/arguments/standard/DurationArgument.java b/cloud-core/src/main/java/cloud/commandframework/arguments/standard/DurationArgument.java
+index 7336c3807262c6ca401ed87c931420118f0a9c92..e4713550eef51f44b491bdb403627cd87681a9e9 100644
+--- a/cloud-core/src/main/java/cloud/commandframework/arguments/standard/DurationArgument.java
++++ b/cloud-core/src/main/java/cloud/commandframework/arguments/standard/DurationArgument.java
+@@ -304,7 +304,10 @@ public final class DurationArgument<C> extends CommandArgument<C, Duration> {
+                     Parser.class,
+                     context,
+                     StandardCaptionKeys.ARGUMENT_PARSE_FAILURE_DURATION,
+-                    CaptionVariable.of("input", input)
++                    // cloudnet start - better captions
++                    input
++                    //CaptionVariable.of("input", input)
++                    // cloudnet end
+             );
+             this.input = input;
+         }
+diff --git a/cloud-core/src/main/java/cloud/commandframework/arguments/standard/EnumArgument.java b/cloud-core/src/main/java/cloud/commandframework/arguments/standard/EnumArgument.java
+index 7f9578913da8b19843a986db2aa08cb19c746a0d..4681fdd63d3f3efbb5afaf88d186940ab30e6a76 100644
+--- a/cloud-core/src/main/java/cloud/commandframework/arguments/standard/EnumArgument.java
++++ b/cloud-core/src/main/java/cloud/commandframework/arguments/standard/EnumArgument.java
+@@ -227,8 +227,11 @@ public class EnumArgument<C, E extends Enum<E>> extends CommandArgument<C, E> {
+                     EnumParser.class,
+                     context,
+                     StandardCaptionKeys.ARGUMENT_PARSE_FAILURE_ENUM,
+-                    CaptionVariable.of("input", input),
+-                    CaptionVariable.of("acceptableValues", join(enumClass))
++                    // cloudnet start - better captions
++                    input, join(enumClass)
++                    //CaptionVariable.of("input", input),
++                    //CaptionVariable.of("acceptableValues", join(enumClass))
++                    // cloudnet end
+             );
+             this.input = input;
+             this.enumClass = enumClass;
+diff --git a/cloud-core/src/main/java/cloud/commandframework/arguments/standard/StringArgument.java b/cloud-core/src/main/java/cloud/commandframework/arguments/standard/StringArgument.java
+index 9c3816ebfc56ab125685a1685aa6f9746f3445b4..66d00ad2967a1d8a665f0d345295eaf6e3559f38 100644
+--- a/cloud-core/src/main/java/cloud/commandframework/arguments/standard/StringArgument.java
++++ b/cloud-core/src/main/java/cloud/commandframework/arguments/standard/StringArgument.java
+@@ -490,8 +490,11 @@ public final class StringArgument<C> extends CommandArgument<C, String> {
+                     StringParser.class,
+                     context,
+                     StandardCaptionKeys.ARGUMENT_PARSE_FAILURE_STRING,
+-                    CaptionVariable.of("input", input),
+-                    CaptionVariable.of("stringMode", stringMode.name())
++                    // cloudnet start - better captions
++                    input, stringMode.name()
++                    //CaptionVariable.of("input", input),
++                    //CaptionVariable.of("stringMode", stringMode.name())
++                    // cloudnet end
+             );
+             this.input = input;
+             this.stringMode = stringMode;
+diff --git a/cloud-core/src/main/java/cloud/commandframework/arguments/standard/UUIDArgument.java b/cloud-core/src/main/java/cloud/commandframework/arguments/standard/UUIDArgument.java
+index bf2d1e791284d5c8341604a5f33358156a3fd4b9..99e945d3264e7f25d2ed9f5f0073fc89a7127e9b 100644
+--- a/cloud-core/src/main/java/cloud/commandframework/arguments/standard/UUIDArgument.java
++++ b/cloud-core/src/main/java/cloud/commandframework/arguments/standard/UUIDArgument.java
+@@ -182,7 +182,10 @@ public final class UUIDArgument<C> extends CommandArgument<C, UUID> {
+                     UUIDParser.class,
+                     context,
+                     StandardCaptionKeys.ARGUMENT_PARSE_FAILURE_UUID,
+-                    CaptionVariable.of("input", input)
++                    // cloudnet start - better captions
++                    input
++                    //CaptionVariable.of("input", input)
++                    // cloudnet end
+             );
+             this.input = input;
+         }
+diff --git a/cloud-core/src/main/java/cloud/commandframework/captions/CaptionVariableReplacementHandler.java b/cloud-core/src/main/java/cloud/commandframework/captions/CaptionVariableReplacementHandler.java
+index d37b59c6557c6bf0f2da2b0270225618e4bac0bd..22087b817e828777e65b839b7e33db27e5ec0c79 100644
+--- a/cloud-core/src/main/java/cloud/commandframework/captions/CaptionVariableReplacementHandler.java
++++ b/cloud-core/src/main/java/cloud/commandframework/captions/CaptionVariableReplacementHandler.java
+@@ -32,12 +32,15 @@ import org.checkerframework.checker.nullness.qual.NonNull;
+ @API(status = API.Status.STABLE)
+ public interface CaptionVariableReplacementHandler {
+ 
++    // cloudnet start - don't wrap caption variables
+     /**
+      * Replace the variables in a message and return the result
+      *
+-     * @param string    Message to replace variables in
++     * @param caption   caption to replace variables of
+      * @param variables Variables
+      * @return Transformed message
+      */
+-    @NonNull String replaceVariables(@NonNull String string, @NonNull CaptionVariable... variables);
++    // @NonNull String replaceVariables(@NonNull String string, @NonNull CaptionVariable... variables);
++    @NonNull String replaceVariables(@NonNull Caption caption, @NonNull Object... variables);
++    // cloudnet end
+ }
+diff --git a/cloud-core/src/main/java/cloud/commandframework/captions/SimpleCaptionVariableReplacementHandler.java b/cloud-core/src/main/java/cloud/commandframework/captions/SimpleCaptionVariableReplacementHandler.java
+index cbf9f0fc788d8d1014947299e2611788d1a07943..8974fb4b087e6c1ba549927cc1d2ca129987a0fe 100644
+--- a/cloud-core/src/main/java/cloud/commandframework/captions/SimpleCaptionVariableReplacementHandler.java
++++ b/cloud-core/src/main/java/cloud/commandframework/captions/SimpleCaptionVariableReplacementHandler.java
+@@ -32,6 +32,8 @@ import org.checkerframework.checker.nullness.qual.NonNull;
+ @API(status = API.Status.STABLE)
+ public final class SimpleCaptionVariableReplacementHandler implements CaptionVariableReplacementHandler {
+ 
++    // cloudnet start - better captions
++    /*
+     @Override
+     public @NonNull String replaceVariables(
+             final @NonNull String string,
+@@ -42,5 +44,11 @@ public final class SimpleCaptionVariableReplacementHandler implements CaptionVar
+             replacedString = replacedString.replace(String.format("{%s}", variable.getKey()), variable.getValue());
+         }
+         return replacedString;
++    }*/
++
++    @Override
++    public @NonNull String replaceVariables(@NonNull final Caption caption, final @NonNull Object... variables) {
++        return caption.getKey();
+     }
++    // cloudnet end
+ }
+diff --git a/cloud-core/src/main/java/cloud/commandframework/captions/StandardCaptionKeys.java b/cloud-core/src/main/java/cloud/commandframework/captions/StandardCaptionKeys.java
+index 77d9bafc80de0c394602b97986ae47c5919b9a8e..07bf16880deca2678718bf6630de41172739da17 100644
+--- a/cloud-core/src/main/java/cloud/commandframework/captions/StandardCaptionKeys.java
++++ b/cloud-core/src/main/java/cloud/commandframework/captions/StandardCaptionKeys.java
+@@ -40,7 +40,7 @@ public final class StandardCaptionKeys {
+     /**
+      * Variables: None
+      */
+-    public static final Caption ARGUMENT_PARSE_FAILURE_NO_INPUT_PROVIDED = of("argument.parse.failure.no_input_was_provided");
++    public static final Caption ARGUMENT_PARSE_FAILURE_NO_INPUT_PROVIDED = of("argument.parse.failure.no-input-was-provided"); // cloudnet
+     /**
+      * Variables: {input}
+      */
+@@ -76,19 +76,19 @@ public final class StandardCaptionKeys {
+     /**
+      * Variables: {flag}
+      */
+-    public static final Caption ARGUMENT_PARSE_FAILURE_FLAG_DUPLICATE_FLAG = of("argument.parse.failure.flag.duplicate_flag");
++    public static final Caption ARGUMENT_PARSE_FAILURE_FLAG_DUPLICATE_FLAG = of("argument.parse.failure.flag.duplicate-flag"); // cloudnet
+     /**
+      * Variables: {input}
+      */
+-    public static final Caption ARGUMENT_PARSE_FAILURE_FLAG_NO_FLAG_STARTED = of("argument.parse.failure.flag.no_flag_started");
++    public static final Caption ARGUMENT_PARSE_FAILURE_FLAG_NO_FLAG_STARTED = of("argument.parse.failure.flag.no-flag-started"); // cloudnet
+     /**
+      * Variables: {flag}
+      */
+-    public static final Caption ARGUMENT_PARSE_FAILURE_FLAG_MISSING_ARGUMENT = of("argument.parse.failure.flag.missing_argument");
++    public static final Caption ARGUMENT_PARSE_FAILURE_FLAG_MISSING_ARGUMENT = of("argument.parse.failure.flag.missing-argument"); // cloudnet
+     /**
+      * Variables: {flag}
+      */
+-    public static final Caption ARGUMENT_PARSE_FAILURE_FLAG_NO_PERMISSION = of("argument.parse.failure.flag.no_permission");
++    public static final Caption ARGUMENT_PARSE_FAILURE_FLAG_NO_PERMISSION = of("argument.parse.failure.flag.no-permission"); // cloudnet
+     /**
+      * Variables: {input}
+      */
+@@ -98,6 +98,13 @@ public final class StandardCaptionKeys {
+      */
+     public static final Caption ARGUMENT_PARSE_FAILURE_DURATION = of("argument.parse.failure.duration");
+ 
++    // cloudnet start
++    public static final Caption INVALID_COMMAND_SENDER = of("invalid.command.sender");
++    public static final Caption INVALID_COMMAND_SYNTAX = of("invalid.command.syntax");
++    public static final Caption MISSING_COMMAND_PERMISSION = of("missing.command.permission");
++    public static final Caption NO_SUCH_COMMAND = of("no.such.command");
++    // cloudnet end
++
+     private StandardCaptionKeys() {
+     }
+ 
+diff --git a/cloud-core/src/main/java/cloud/commandframework/context/CommandContext.java b/cloud-core/src/main/java/cloud/commandframework/context/CommandContext.java
+index 1ba10551c56f5f910775c4ef84bb58e7c56bdeef..fc31340dea883a99a9116c3c310209ad297f059d 100644
+--- a/cloud-core/src/main/java/cloud/commandframework/context/CommandContext.java
++++ b/cloud-core/src/main/java/cloud/commandframework/context/CommandContext.java
+@@ -52,6 +52,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
+  * @param <C> Command sender type
+  */
+ @API(status = API.Status.STABLE)
++@SuppressWarnings("unused") // cloudnet
+ public class CommandContext<C> {
+ 
+     private final CaptionVariableReplacementHandler captionVariableReplacementHandler;
+@@ -144,10 +145,17 @@ public class CommandContext<C> {
+             final @NonNull Caption caption,
+             final @NonNull CaptionVariable... variables
+     ) {
++        // cloudnet start - better captions
+         return this.captionVariableReplacementHandler.replaceVariables(
+-                this.captionRegistry.getCaption(caption, this.commandSender),
+-                variables
+-        );
++                caption,
++                java.util.Arrays.stream(variables)
++                        .map(cloud.commandframework.captions.CaptionVariable::getValue)
++                        .toArray());
++        //return this.captionVariableReplacementHandler.replaceVariables(
++        //        this.captionRegistry.getCaption(caption, this.commandSender),
++        //        variables
++        //);
++        // cloudnet end
+     }
+ 
+     /**
+@@ -653,6 +661,11 @@ public class CommandContext<C> {
+         return this.commandManager.parameterInjectorRegistry().getInjectable(clazz, this, AnnotationAccessor.empty());
+     }
+ 
++    // cloudnet start - expose caption replacement handler
++    public CaptionVariableReplacementHandler getCaptionVariableReplacementHandler() {
++        return this.captionVariableReplacementHandler;
++    }
++    // cloudnet end
+ 
+     /**
+      * Used to track performance metrics related to command parsing. This is attached
+diff --git a/cloud-core/src/main/java/cloud/commandframework/exceptions/ArgumentParseException.java b/cloud-core/src/main/java/cloud/commandframework/exceptions/ArgumentParseException.java
+index 6c6d0989f87ff5ecefd407826cc91de557beb334..a2a3dfe0dfa0a522f055e99b165ce74c5daadcd6 100644
+--- a/cloud-core/src/main/java/cloud/commandframework/exceptions/ArgumentParseException.java
++++ b/cloud-core/src/main/java/cloud/commandframework/exceptions/ArgumentParseException.java
+@@ -29,11 +29,16 @@ import org.apiguardian.api.API;
+ import org.checkerframework.checker.nullness.qual.NonNull;
+ 
+ @API(status = API.Status.STABLE)
+-public class ArgumentParseException extends CommandParseException {
++public class ArgumentParseException extends IllegalArgumentException { // cloudnet - CommandParseException -> IllegalArgumentException
+ 
+     private static final long serialVersionUID = -4385446899439587461L;
+     private final Throwable cause;
+ 
++    // cloudnet start - better captions
++    private final Object commandSender;
++    private final List<CommandArgument<?, ?>> currentChain;
++    // cloudnet end
++
+     /**
+      * Create a new command parse exception
+      *
+@@ -47,10 +52,24 @@ public class ArgumentParseException extends CommandParseException {
+             final @NonNull Object commandSender,
+             final @NonNull List<@NonNull CommandArgument<?, ?>> currentChain
+     ) {
+-        super(commandSender, currentChain);
++        // cloudnet start - better captions
++        //super(commandSender, currentChain);
++        this.commandSender = commandSender;
++        this.currentChain = currentChain;
++        // cloudnet end
+         this.cause = throwable;
+     }
+ 
++    // cloudnet start - better captions
++    public Object getCommandSender() {
++        return this.commandSender;
++    }
++
++    public List<CommandArgument<?, ?>> getCurrentChain() {
++        return this.currentChain;
++    }
++    // cloudnet end
++
+     /**
+      * Get the cause of the exception
+      *
+diff --git a/cloud-core/src/main/java/cloud/commandframework/exceptions/CommandParseException.java b/cloud-core/src/main/java/cloud/commandframework/exceptions/CommandParseException.java
+index 938f01dc2d72f901605f940a65de759cf2f1b788..75580cc111d49568c71ad73c21c742ee5ecebf6c 100644
+--- a/cloud-core/src/main/java/cloud/commandframework/exceptions/CommandParseException.java
++++ b/cloud-core/src/main/java/cloud/commandframework/exceptions/CommandParseException.java
+@@ -34,7 +34,7 @@ import org.checkerframework.checker.nullness.qual.NonNull;
+  */
+ @SuppressWarnings({"unused", "serial"})
+ @API(status = API.Status.STABLE)
+-public class CommandParseException extends IllegalArgumentException {
++public class CommandParseException extends eu.cloudnetservice.CaptionedCommandException { // cloudnet
+ 
+     private static final long serialVersionUID = -2415981126382517435L;
+     private final Object commandSender;
+@@ -49,8 +49,14 @@ public class CommandParseException extends IllegalArgumentException {
+     @API(status = API.Status.INTERNAL, consumers = "cloud.commandframework.*")
+     protected CommandParseException(
+             final @NonNull Object commandSender,
+-            final @NonNull List<CommandArgument<?, ?>> currentChain
++            // cloudnet start - better captions
++            final @NonNull List<CommandArgument<?, ?>> currentChain,
++            final cloud.commandframework.captions.Caption caption,
++            final cloud.commandframework.captions.CaptionVariableReplacementHandler replacementHandler,
++            final @NonNull Object... captionArgs
+     ) {
++        super(caption, replacementHandler, captionArgs);
++        // cloudnet end
+         this.commandSender = commandSender;
+         this.currentChain = currentChain;
+     }
+diff --git a/cloud-core/src/main/java/cloud/commandframework/exceptions/InvalidCommandSenderException.java b/cloud-core/src/main/java/cloud/commandframework/exceptions/InvalidCommandSenderException.java
+index 1d3b6f6818e6fcb9c40aaf88a53574ec323a9038..2964b06f8b0470dfcac5964143caefebc58d6256 100644
+--- a/cloud-core/src/main/java/cloud/commandframework/exceptions/InvalidCommandSenderException.java
++++ b/cloud-core/src/main/java/cloud/commandframework/exceptions/InvalidCommandSenderException.java
+@@ -52,9 +52,12 @@ public final class InvalidCommandSenderException extends CommandParseException {
+     public InvalidCommandSenderException(
+             final @NonNull Object commandSender,
+             final @NonNull Class<?> requiredSender,
+-            final @NonNull List<@NonNull CommandArgument<?, ?>> currentChain
++            // cloudnet start - better captions
++            final @NonNull List<@NonNull CommandArgument<?, ?>> currentChain,
++            final cloud.commandframework.captions.CaptionVariableReplacementHandler replacementHandler
+     ) {
+-        this(commandSender, requiredSender, currentChain, null);
++        this(commandSender, requiredSender, currentChain, null, replacementHandler);
++        // cloudnet end
+     }
+ 
+     /**
+@@ -71,9 +74,13 @@ public final class InvalidCommandSenderException extends CommandParseException {
+             final @NonNull Object commandSender,
+             final @NonNull Class<?> requiredSender,
+             final @NonNull List<@NonNull CommandArgument<?, ?>> currentChain,
+-            final @Nullable Command<?> command
++            // cloudnet start - better captions
++            final @Nullable Command<?> command,
++            final cloud.commandframework.captions.CaptionVariableReplacementHandler replacementHandler
+     ) {
+-        super(commandSender, currentChain);
++        super(commandSender, currentChain, cloud.commandframework.captions.StandardCaptionKeys.INVALID_COMMAND_SENDER,
++                replacementHandler, commandSender, requiredSender);
++        // cloudnet end
+         this.requiredSender = requiredSender;
+         this.command = command;
+     }
+@@ -89,11 +96,14 @@ public final class InvalidCommandSenderException extends CommandParseException {
+ 
+     @Override
+     public String getMessage() {
+-        return String.format(
+-                "%s is not allowed to execute that command. Must be of type %s",
+-                getCommandSender().getClass().getSimpleName(),
+-                this.requiredSender.getSimpleName()
+-        );
++        // cloudnet start - better captions
++        return super.getMessage();
++        //return String.format(
++        //        "%s is not allowed to execute that command. Must be of type %s",
++        //        getCommandSender().getClass().getSimpleName(),
++        //        this.requiredSender.getSimpleName()
++        //);
++        // cloudnet end
+     }
+ 
+     /**
+diff --git a/cloud-core/src/main/java/cloud/commandframework/exceptions/InvalidSyntaxException.java b/cloud-core/src/main/java/cloud/commandframework/exceptions/InvalidSyntaxException.java
+index 3accd115864382ed37771dda53d5517a57a037a6..56918cd115e841e9e0355252cf9179ba5ca70f9d 100644
+--- a/cloud-core/src/main/java/cloud/commandframework/exceptions/InvalidSyntaxException.java
++++ b/cloud-core/src/main/java/cloud/commandframework/exceptions/InvalidSyntaxException.java
+@@ -49,9 +49,13 @@ public class InvalidSyntaxException extends CommandParseException {
+     public InvalidSyntaxException(
+             final @NonNull String correctSyntax,
+             final @NonNull Object commandSender,
+-            final @NonNull List<@NonNull CommandArgument<?, ?>> currentChain
++            // cloudnet start - better captions
++            final @NonNull List<@NonNull CommandArgument<?, ?>> currentChain,
++            final cloud.commandframework.captions.CaptionVariableReplacementHandler replacementHandler
+     ) {
+-        super(commandSender, currentChain);
++        super(commandSender, currentChain, cloud.commandframework.captions.StandardCaptionKeys.INVALID_COMMAND_SYNTAX,
++                replacementHandler, correctSyntax);
++        // cloudnet end
+         this.correctSyntax = correctSyntax;
+     }
+ 
+@@ -67,6 +71,9 @@ public class InvalidSyntaxException extends CommandParseException {
+ 
+     @Override
+     public final String getMessage() {
+-        return String.format("Invalid command syntax. Correct syntax is: %s", this.correctSyntax);
++        // cloudnet start - better captions
++        return super.getMessage();
++        //return String.format("Invalid command syntax. Correct syntax is: %s", this.correctSyntax);
++        // cloudnet end
+     }
+ }
+diff --git a/cloud-core/src/main/java/cloud/commandframework/exceptions/NoPermissionException.java b/cloud-core/src/main/java/cloud/commandframework/exceptions/NoPermissionException.java
+index d56e7a17d78eacbeef8da9cda46c1b032f5c5a17..511bbfd2209db640f0776217d245d67a4b40f2bb 100644
+--- a/cloud-core/src/main/java/cloud/commandframework/exceptions/NoPermissionException.java
++++ b/cloud-core/src/main/java/cloud/commandframework/exceptions/NoPermissionException.java
+@@ -52,15 +52,22 @@ public class NoPermissionException extends CommandParseException {
+     public NoPermissionException(
+             final @NonNull CommandPermission missingPermission,
+             final @NonNull Object commandSender,
+-            final @NonNull List<@NonNull CommandArgument<?, ?>> currentChain
++            // cloudnet start - better captions
++            final @NonNull List<@NonNull CommandArgument<?, ?>> currentChain,
++            final cloud.commandframework.captions.CaptionVariableReplacementHandler replacementHandler
+     ) {
+-        super(commandSender, currentChain);
++        super(commandSender, currentChain, cloud.commandframework.captions.StandardCaptionKeys.MISSING_COMMAND_PERMISSION,
++                replacementHandler, missingPermission.toString());
++        // cloudnet end
+         this.missingPermission = missingPermission;
+     }
+ 
+     @Override
+     public final String getMessage() {
+-        return String.format("Missing permission '%s'", this.missingPermission);
++        // cloudnet start - better captions
++        return super.getMessage();
++        //return String.format("Missing permission '%s'", this.missingPermission);
++        // cloudnet end
+     }
+ 
+     /**
+diff --git a/cloud-core/src/main/java/cloud/commandframework/exceptions/NoSuchCommandException.java b/cloud-core/src/main/java/cloud/commandframework/exceptions/NoSuchCommandException.java
+index a7599e63d7fcbac6b3d041f34f67791c91fe3148..25a64456f1cddd5148441836002f8940bb8ae7cd 100644
+--- a/cloud-core/src/main/java/cloud/commandframework/exceptions/NoSuchCommandException.java
++++ b/cloud-core/src/main/java/cloud/commandframework/exceptions/NoSuchCommandException.java
+@@ -50,23 +50,30 @@ public final class NoSuchCommandException extends CommandParseException {
+     public NoSuchCommandException(
+             final @NonNull Object commandSender,
+             final @NonNull List<CommandArgument<?, ?>> currentChain,
+-            final @NonNull String command
++            // cloudnet start
++            final @NonNull String command,
++            final cloud.commandframework.captions.Caption caption,
++            final cloud.commandframework.captions.CaptionVariableReplacementHandler replacementHandler
+     ) {
+-        super(commandSender, currentChain);
++        super(commandSender, currentChain, caption, replacementHandler, command);
++        // cloudnet end
+         this.suppliedCommand = command;
+     }
+ 
+ 
+     @Override
+     public String getMessage() {
+-        final StringBuilder builder = new StringBuilder();
+-        for (final CommandArgument<?, ?> commandArgument : this.getCurrentChain()) {
+-            if (commandArgument == null) {
+-                continue;
+-            }
+-            builder.append(" ").append(commandArgument.getName());
+-        }
+-        return String.format("Unrecognized command input '%s' following chain%s", this.suppliedCommand, builder.toString());
++        // cloudnet start - better captions
++        return super.getMessage();
++        //final StringBuilder builder = new StringBuilder();
++        //for (final CommandArgument<?, ?> commandArgument : this.getCurrentChain()) {
++        //     if (commandArgument == null) {
++        //        continue;
++        //     }
++        //    builder.append(" ").append(commandArgument.getName());
++        //}
++        //return String.format("Unrecognized command input '%s' following chain%s", this.suppliedCommand, builder.toString());
++        // cloudnet end
+     }
+ 
+     /**
+diff --git a/cloud-core/src/main/java/cloud/commandframework/exceptions/parsing/NoInputProvidedException.java b/cloud-core/src/main/java/cloud/commandframework/exceptions/parsing/NoInputProvidedException.java
+index 90be4ccfaaf944cfc06e3662f90963efa9fe388a..b57b9494c43a4579a9d0d02d84cc87a7bf2046dc 100644
+--- a/cloud-core/src/main/java/cloud/commandframework/exceptions/parsing/NoInputProvidedException.java
++++ b/cloud-core/src/main/java/cloud/commandframework/exceptions/parsing/NoInputProvidedException.java
+@@ -51,7 +51,8 @@ public class NoInputProvidedException extends ParserException {
+         super(
+                 argumentParser,
+                 context,
+-                StandardCaptionKeys.ARGUMENT_PARSE_FAILURE_NO_INPUT_PROVIDED
++                StandardCaptionKeys.ARGUMENT_PARSE_FAILURE_NO_INPUT_PROVIDED, // cloudnet
++                EMPTY_OBJECTS // cloudnet
+         );
+     }
+ }
+diff --git a/cloud-core/src/main/java/cloud/commandframework/exceptions/parsing/NumberParseException.java b/cloud-core/src/main/java/cloud/commandframework/exceptions/parsing/NumberParseException.java
+index 9b3210c869d65dc66ebdd195a5886be4cbf3910f..014f17e2d4ffb4e0c0e173642dcafb115f27cba9 100644
+--- a/cloud-core/src/main/java/cloud/commandframework/exceptions/parsing/NumberParseException.java
++++ b/cloud-core/src/main/java/cloud/commandframework/exceptions/parsing/NumberParseException.java
+@@ -57,9 +57,12 @@ public abstract class NumberParseException extends ParserException {
+                 parserClass,
+                 context,
+                 StandardCaptionKeys.ARGUMENT_PARSE_FAILURE_NUMBER,
+-                CaptionVariable.of("input", input),
+-                CaptionVariable.of("min", String.valueOf(min)),
+-                CaptionVariable.of("max", String.valueOf(max))
++                // cloudnet start - better captions
++                input, min, max
++                //CaptionVariable.of("input", input),
++                //CaptionVariable.of("min", String.valueOf(min)),
++                //CaptionVariable.of("max", String.valueOf(max))
++                // cloudnet end
+         );
+         this.input = input;
+         this.min = min;
+diff --git a/cloud-core/src/main/java/cloud/commandframework/exceptions/parsing/ParserException.java b/cloud-core/src/main/java/cloud/commandframework/exceptions/parsing/ParserException.java
+index 8e4ae370d2dd05ce436d7dcd18976fcd5630ad8e..2dd2071fd7334e9e201a1657365c9354eb82de75 100644
+--- a/cloud-core/src/main/java/cloud/commandframework/exceptions/parsing/ParserException.java
++++ b/cloud-core/src/main/java/cloud/commandframework/exceptions/parsing/ParserException.java
+@@ -32,7 +32,9 @@ import org.checkerframework.checker.nullness.qual.NonNull;
+ 
+ @SuppressWarnings("serial")
+ @API(status = API.Status.STABLE)
+-public class ParserException extends IllegalArgumentException {
++public class ParserException extends eu.cloudnetservice.CaptionedCommandException { // cloudnet
++    protected static final CaptionVariable[] EMPTY_VARIABLES = new CaptionVariable[0]; // cloudnet
++    protected static final Object[] EMPTY_OBJECTS = new Object[0];
+ 
+     private static final long serialVersionUID = -4409795575435072170L;
+     private final Class<?> argumentParser;
+@@ -46,18 +48,37 @@ public class ParserException extends IllegalArgumentException {
+             final @NonNull Caption errorCaption,
+             final @NonNull CaptionVariable... captionVariables
+     ) {
++        super(errorCaption, context.getCaptionVariableReplacementHandler(), captionVariables); // cloudnet
+         this.argumentParser = argumentParser;
+         this.context = context;
+         this.errorCaption = errorCaption;
+         this.captionVariables = captionVariables;
+     }
+ 
++    // cloudnet start - better captions
++    protected ParserException(
++            final @NonNull Class<?> argumentParser,
++            final @NonNull CommandContext<?> context,
++            final @NonNull Caption errorCaption,
++            final @NonNull Object... captionVariables
++    ) {
++        super(errorCaption, context.getCaptionVariableReplacementHandler(), captionVariables);
++        this.argumentParser = argumentParser;
++        this.context = context;
++        this.errorCaption = errorCaption;
++        this.captionVariables = EMPTY_VARIABLES;
++    }
++    // cloudnet end
++
+     @Override
+     public final String getMessage() {
+-        return this.context.formatMessage(
+-                this.errorCaption,
+-                this.captionVariables
+-        );
++        // cloudnet start - handled by super
++        return super.getMessage();
++        //return this.context.formatMessage(
++        //        this.errorCaption,
++        //        this.captionVariables
++        //);
++        // cloudnet end
+     }
+ 
+     /**
+diff --git a/cloud-core/src/main/java/eu/cloudnetservice/CaptionedCommandException.java b/cloud-core/src/main/java/eu/cloudnetservice/CaptionedCommandException.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..c34c1cd4a5b30135c30fddf59bcd0ecbc488d594
+--- /dev/null
++++ b/cloud-core/src/main/java/eu/cloudnetservice/CaptionedCommandException.java
+@@ -0,0 +1,51 @@
++package eu.cloudnetservice;
++
++import cloud.commandframework.captions.Caption;
++import cloud.commandframework.captions.CaptionVariable;
++import cloud.commandframework.captions.CaptionVariableReplacementHandler;
++import java.util.Arrays;
++import org.apiguardian.api.API;
++import org.checkerframework.checker.nullness.qual.NonNull;
++
++/**
++ * Represents an exception thrown by anything which has a caption.
++ */
++
++@API(since = "1.7.0", status = API.Status.INTERNAL, consumers = "cloud.commandframework.*")
++public class CaptionedCommandException extends RuntimeException {
++
++    private static final long serialVersionUID = -8689529275698731177L;
++
++    private final String message;
++
++    protected CaptionedCommandException(
++            final @NonNull Caption caption,
++            final @NonNull CaptionVariableReplacementHandler replacementHandler,
++            final @NonNull CaptionVariable... captionArgs
++    ) {
++        this(caption, replacementHandler, Arrays.stream(captionArgs).map(CaptionVariable::getValue).toArray());
++    }
++
++    public CaptionedCommandException(
++            final @NonNull Caption caption,
++            final @NonNull CaptionVariableReplacementHandler replacementHandler,
++            final @NonNull Object... captionArgs
++    ) {
++        this.message = replacementHandler.replaceVariables(caption, captionArgs);
++    }
++
++    @Override
++    public String getMessage() {
++        return this.message;
++    }
++
++    @Override
++    public synchronized Throwable fillInStackTrace() {
++        return this;
++    }
++
++    @Override
++    public synchronized Throwable initCause(final Throwable cause) {
++        return this;
++    }
++}
+diff --git a/cloud-irc/cloud-pircbotx/src/main/java/cloud/commandframework/pircbotx/arguments/UserArgument.java b/cloud-irc/cloud-pircbotx/src/main/java/cloud/commandframework/pircbotx/arguments/UserArgument.java
+index 165bdcb4a95995b9b9c540238bec205718379f25..c82b5f2d8a0824f4b5157c32093bc20a662c4038 100644
+--- a/cloud-irc/cloud-pircbotx/src/main/java/cloud/commandframework/pircbotx/arguments/UserArgument.java
++++ b/cloud-irc/cloud-pircbotx/src/main/java/cloud/commandframework/pircbotx/arguments/UserArgument.java
+@@ -171,10 +171,13 @@ public final class UserArgument<C> extends CommandArgument<C, User> {
+                     UserArgumentParser.class,
+                     context,
+                     PircBotXCommandManager.ARGUMENT_PARSE_FAILURE_USER_KEY,
+-                    CaptionVariable.of(
+-                            "input",
+-                            input
+-                    )
++                    // cloudnet start - better captions
++                    input
++                    //CaptionVariable.of(
++                    //        "input",
++                    //        input
++                    //)
++                    // cloudnet end
+             );
+         }
+     }
+diff --git a/cloud-minecraft/cloud-bukkit/src/main/java/cloud/commandframework/bukkit/argument/NamespacedKeyArgument.java b/cloud-minecraft/cloud-bukkit/src/main/java/cloud/commandframework/bukkit/argument/NamespacedKeyArgument.java
+index 849899101334d632b41576173469c3ade654802b..82b08fad835eba34568171c9a2238a073f0646ce 100644
+--- a/cloud-minecraft/cloud-bukkit/src/main/java/cloud/commandframework/bukkit/argument/NamespacedKeyArgument.java
++++ b/cloud-minecraft/cloud-bukkit/src/main/java/cloud/commandframework/bukkit/argument/NamespacedKeyArgument.java
+@@ -315,7 +315,10 @@ public final class NamespacedKeyArgument<C> extends CommandArgument<C, Namespace
+                     Parser.class,
+                     context,
+                     caption,
+-                    CaptionVariable.of("input", input)
++                    // cloudnet start - better captions
++                    input
++                    //CaptionVariable.of("input", input)
++                    // cloudnet end
+             );
+             this.input = input;
+         }
+diff --git a/cloud-minecraft/cloud-bukkit/src/main/java/cloud/commandframework/bukkit/parsers/EnchantmentArgument.java b/cloud-minecraft/cloud-bukkit/src/main/java/cloud/commandframework/bukkit/parsers/EnchantmentArgument.java
+index ad3f4a5af0cb706f339ddf8b07bd697fefcc26fd..a21a3ea5c30a74dcd44747f5436f6fe1958b7107 100644
+--- a/cloud-minecraft/cloud-bukkit/src/main/java/cloud/commandframework/bukkit/parsers/EnchantmentArgument.java
++++ b/cloud-minecraft/cloud-bukkit/src/main/java/cloud/commandframework/bukkit/parsers/EnchantmentArgument.java
+@@ -206,7 +206,10 @@ public class EnchantmentArgument<C> extends CommandArgument<C, Enchantment> {
+                     EnchantmentParser.class,
+                     context,
+                     BukkitCaptionKeys.ARGUMENT_PARSE_FAILURE_ENCHANTMENT,
+-                    CaptionVariable.of("input", input)
++                    // cloudnet start - better captions
++                    input
++                    // CaptionVariable.of("input", input)
++                    // cloudnet end
+             );
+             this.input = input;
+         }
+diff --git a/cloud-minecraft/cloud-bukkit/src/main/java/cloud/commandframework/bukkit/parsers/MaterialArgument.java b/cloud-minecraft/cloud-bukkit/src/main/java/cloud/commandframework/bukkit/parsers/MaterialArgument.java
+index c711c5080613b6e8c7fbdfa46084d1b4b21285c2..6d3e8c329dc4a0d92c4d797c0889c8a525880b11 100644
+--- a/cloud-minecraft/cloud-bukkit/src/main/java/cloud/commandframework/bukkit/parsers/MaterialArgument.java
++++ b/cloud-minecraft/cloud-bukkit/src/main/java/cloud/commandframework/bukkit/parsers/MaterialArgument.java
+@@ -181,7 +181,10 @@ public class MaterialArgument<C> extends CommandArgument<C, Material> {
+                     MaterialParser.class,
+                     context,
+                     BukkitCaptionKeys.ARGUMENT_PARSE_FAILURE_MATERIAL,
+-                    CaptionVariable.of("input", input)
++                    // cloudnet start - better captions
++                    input
++                    //CaptionVariable.of("input", input)
++                    // cloudnet end
+             );
+             this.input = input;
+         }
+diff --git a/cloud-minecraft/cloud-bukkit/src/main/java/cloud/commandframework/bukkit/parsers/OfflinePlayerArgument.java b/cloud-minecraft/cloud-bukkit/src/main/java/cloud/commandframework/bukkit/parsers/OfflinePlayerArgument.java
+index d9985eedcd880b6613700fcc42623f6f8f55c4fb..f54b5d27434acbee4bc788c9aa97f9683e7ebbe8 100644
+--- a/cloud-minecraft/cloud-bukkit/src/main/java/cloud/commandframework/bukkit/parsers/OfflinePlayerArgument.java
++++ b/cloud-minecraft/cloud-bukkit/src/main/java/cloud/commandframework/bukkit/parsers/OfflinePlayerArgument.java
+@@ -211,7 +211,10 @@ public final class OfflinePlayerArgument<C> extends CommandArgument<C, OfflinePl
+                     OfflinePlayerParser.class,
+                     context,
+                     BukkitCaptionKeys.ARGUMENT_PARSE_FAILURE_OFFLINEPLAYER,
+-                    CaptionVariable.of("input", input)
++                    // cloudnet start - better captions
++                    input
++                    //CaptionVariable.of("input", input)
++                    // cloudnet end
+             );
+             this.input = input;
+         }
+diff --git a/cloud-minecraft/cloud-bukkit/src/main/java/cloud/commandframework/bukkit/parsers/PlayerArgument.java b/cloud-minecraft/cloud-bukkit/src/main/java/cloud/commandframework/bukkit/parsers/PlayerArgument.java
+index 0bca91a19509cb16a80126e2ffef0d506e4a3984..c7fa7900537e68367339a76d89d6c77bd76fa083 100644
+--- a/cloud-minecraft/cloud-bukkit/src/main/java/cloud/commandframework/bukkit/parsers/PlayerArgument.java
++++ b/cloud-minecraft/cloud-bukkit/src/main/java/cloud/commandframework/bukkit/parsers/PlayerArgument.java
+@@ -203,7 +203,10 @@ public final class PlayerArgument<C> extends CommandArgument<C, Player> {
+                     PlayerParser.class,
+                     context,
+                     BukkitCaptionKeys.ARGUMENT_PARSE_FAILURE_PLAYER,
+-                    CaptionVariable.of("input", input)
++                    // cloudnet start - better captions
++                    input
++                    //CaptionVariable.of("input", input)
++                    // cloudnet end
+             );
+             this.input = input;
+         }
+diff --git a/cloud-minecraft/cloud-bukkit/src/main/java/cloud/commandframework/bukkit/parsers/WorldArgument.java b/cloud-minecraft/cloud-bukkit/src/main/java/cloud/commandframework/bukkit/parsers/WorldArgument.java
+index 6ae75bd8e3c94f63969f23a38945e39aedb3b699..ad2750c47f6b9dde5de79a08fdc502ae5aa57032 100644
+--- a/cloud-minecraft/cloud-bukkit/src/main/java/cloud/commandframework/bukkit/parsers/WorldArgument.java
++++ b/cloud-minecraft/cloud-bukkit/src/main/java/cloud/commandframework/bukkit/parsers/WorldArgument.java
+@@ -176,7 +176,10 @@ public class WorldArgument<C> extends CommandArgument<C, World> {
+                     WorldParser.class,
+                     context,
+                     BukkitCaptionKeys.ARGUMENT_PARSE_FAILURE_WORLD,
+-                    CaptionVariable.of("input", input)
++                    // cloudnet start - better captions
++                    input
++                    //CaptionVariable.of("input", input)
++                    // cloudnet end
+             );
+             this.input = input;
+         }
+diff --git a/cloud-minecraft/cloud-bukkit/src/main/java/cloud/commandframework/bukkit/parsers/location/LocationArgument.java b/cloud-minecraft/cloud-bukkit/src/main/java/cloud/commandframework/bukkit/parsers/location/LocationArgument.java
+index affcb713cf5550df33d6211739316089b6850cbc..3e83fde7e111eb53204ce82921a62dadff047ee8 100644
+--- a/cloud-minecraft/cloud-bukkit/src/main/java/cloud/commandframework/bukkit/parsers/location/LocationArgument.java
++++ b/cloud-minecraft/cloud-bukkit/src/main/java/cloud/commandframework/bukkit/parsers/location/LocationArgument.java
+@@ -318,7 +318,10 @@ public final class LocationArgument<C> extends CommandArgument<C, Location> {
+                     LocationParser.class,
+                     context,
+                     reason.getCaption(),
+-                    CaptionVariable.of("input", input)
++                    // cloudnet start - better captions
++                    input
++                    //CaptionVariable.of("input", input)
++                    // cloudnet end
+             );
+         }
+ 
+diff --git a/cloud-minecraft/cloud-bukkit/src/main/java/cloud/commandframework/bukkit/parsers/selector/SelectorParseException.java b/cloud-minecraft/cloud-bukkit/src/main/java/cloud/commandframework/bukkit/parsers/selector/SelectorParseException.java
+index 63293aa7c014fafadf5ad0a70b9579e426e1961d..1dc9d3b3e3968143d4f7de5324a9dd83e1ea1d6f 100644
+--- a/cloud-minecraft/cloud-bukkit/src/main/java/cloud/commandframework/bukkit/parsers/selector/SelectorParseException.java
++++ b/cloud-minecraft/cloud-bukkit/src/main/java/cloud/commandframework/bukkit/parsers/selector/SelectorParseException.java
+@@ -57,7 +57,10 @@ public final class SelectorParseException extends ParserException {
+                 parser,
+                 context,
+                 reason.getCaption(),
+-                CaptionVariable.of("input", input)
++                // cloudnet start - better captions
++                input
++                //CaptionVariable.of("input", input)
++                // cloudnet end
+         );
+         this.reason = reason;
+         this.input = input;
+diff --git a/cloud-minecraft/cloud-bungee/src/main/java/cloud/commandframework/bungee/arguments/PlayerArgument.java b/cloud-minecraft/cloud-bungee/src/main/java/cloud/commandframework/bungee/arguments/PlayerArgument.java
+index 88a0f8de1e8d90466debc9a2480e16ae3a902543..529cd2e5cf1272c9f43fd6e79667ef1e2fce87a9 100644
+--- a/cloud-minecraft/cloud-bungee/src/main/java/cloud/commandframework/bungee/arguments/PlayerArgument.java
++++ b/cloud-minecraft/cloud-bungee/src/main/java/cloud/commandframework/bungee/arguments/PlayerArgument.java
+@@ -197,7 +197,10 @@ public final class PlayerArgument<C> extends CommandArgument<C, ProxiedPlayer> {
+                     PlayerParser.class,
+                     context,
+                     BungeeCaptionKeys.ARGUMENT_PARSE_FAILURE_PLAYER,
+-                    CaptionVariable.of("input", input)
++                    // cloudnet start - better captions
++                    input
++                    //CaptionVariable.of("input", input)
++                    // cloudnet end
+             );
+         }
+     }
+diff --git a/cloud-minecraft/cloud-bungee/src/main/java/cloud/commandframework/bungee/arguments/ServerArgument.java b/cloud-minecraft/cloud-bungee/src/main/java/cloud/commandframework/bungee/arguments/ServerArgument.java
+index 92495dad5c4b3d47559b1b51ccbabcfb2e16271b..ef34076d168cdcba3b66f888084c694e781b9bc8 100644
+--- a/cloud-minecraft/cloud-bungee/src/main/java/cloud/commandframework/bungee/arguments/ServerArgument.java
++++ b/cloud-minecraft/cloud-bungee/src/main/java/cloud/commandframework/bungee/arguments/ServerArgument.java
+@@ -185,7 +185,10 @@ public final class ServerArgument<C> extends CommandArgument<C, ServerInfo> {
+                     ServerParser.class,
+                     context,
+                     BungeeCaptionKeys.ARGUMENT_PARSE_FAILURE_SERVER,
+-                    CaptionVariable.of("input", input)
++                    // cloudnet start - better captions
++                    input
++                    //CaptionVariable.of("input", input)
++                    // cloudnet end
+             );
+         }
+     }
+diff --git a/cloud-minecraft/cloud-fabric/src/main/java/cloud/commandframework/fabric/argument/RegistryEntryArgument.java b/cloud-minecraft/cloud-fabric/src/main/java/cloud/commandframework/fabric/argument/RegistryEntryArgument.java
+index b29263d0fc5871b0d0bd8ac65ad03a1f488a0a89..3a070bf6bb678c4b009341edf47ee548c25b8773 100644
+--- a/cloud-minecraft/cloud-fabric/src/main/java/cloud/commandframework/fabric/argument/RegistryEntryArgument.java
++++ b/cloud-minecraft/cloud-fabric/src/main/java/cloud/commandframework/fabric/argument/RegistryEntryArgument.java
+@@ -352,8 +352,11 @@ public class RegistryEntryArgument<C, V> extends CommandArgument<C, V> {
+                     RegistryEntryArgument.class,
+                     context,
+                     FabricCaptionKeys.ARGUMENT_PARSE_FAILURE_REGISTRY_ENTRY_UNKNOWN_ENTRY,
+-                    CaptionVariable.of("id", key.toString()),
+-                    CaptionVariable.of("registry", registry.toString())
++                    // cloudnet start - better captions
++                    key.toString(), registry.toString()
++                    //CaptionVariable.of("id", key.toString()),
++                    //CaptionVariable.of("registry", registry.toString())
++                    // cloudnet end
+             );
+         }
+     }
+diff --git a/cloud-minecraft/cloud-fabric/src/main/java/cloud/commandframework/fabric/argument/TeamArgument.java b/cloud-minecraft/cloud-fabric/src/main/java/cloud/commandframework/fabric/argument/TeamArgument.java
+index cf114373932f86b2bd166658a90c0339bf948f57..dd32cfe527680b09092e4c995f0722e9836d8b18 100644
+--- a/cloud-minecraft/cloud-fabric/src/main/java/cloud/commandframework/fabric/argument/TeamArgument.java
++++ b/cloud-minecraft/cloud-fabric/src/main/java/cloud/commandframework/fabric/argument/TeamArgument.java
+@@ -234,7 +234,10 @@ public final class TeamArgument<C> extends CommandArgument<C, PlayerTeam> {
+                     TeamParser.class,
+                     context,
+                     FabricCaptionKeys.ARGUMENT_PARSE_FAILURE_TEAM_UNKNOWN,
+-                    CaptionVariable.of("input", input)
++                    // cloudnet start - better captions
++                    input
++                    //CaptionVariable.of("input", input)
++                    // cloudnet end
+             );
+         }
+     }
+diff --git a/cloud-minecraft/cloud-minecraft-extras/src/main/java/cloud/commandframework/minecraft/extras/TextColorArgument.java b/cloud-minecraft/cloud-minecraft-extras/src/main/java/cloud/commandframework/minecraft/extras/TextColorArgument.java
+index d7f871b155c5379c02587f49ab494cbaea025142..9c03fb87d8c1c0668c21cd6eedf6ba597254bad9 100644
+--- a/cloud-minecraft/cloud-minecraft-extras/src/main/java/cloud/commandframework/minecraft/extras/TextColorArgument.java
++++ b/cloud-minecraft/cloud-minecraft-extras/src/main/java/cloud/commandframework/minecraft/extras/TextColorArgument.java
+@@ -227,7 +227,10 @@ public final class TextColorArgument<C> extends CommandArgument<C, TextColor> {
+                     TextColorParser.class,
+                     commandContext,
+                     StandardCaptionKeys.ARGUMENT_PARSE_FAILURE_COLOR,
+-                    CaptionVariable.of("input", input)
++                    // cloudnet start - better captions
++                    input
++                    //CaptionVariable.of("input", input)
++                    // cloudnet end
+             );
+         }
+     }
+diff --git a/cloud-minecraft/cloud-velocity/src/main/java/cloud/commandframework/velocity/arguments/PlayerArgument.java b/cloud-minecraft/cloud-velocity/src/main/java/cloud/commandframework/velocity/arguments/PlayerArgument.java
+index 45f5d9a46586c8bd46a8797e9954a20e2413298a..2b06de2ea25bb8dcac7c160f1dac82a3d94c9dd9 100644
+--- a/cloud-minecraft/cloud-velocity/src/main/java/cloud/commandframework/velocity/arguments/PlayerArgument.java
++++ b/cloud-minecraft/cloud-velocity/src/main/java/cloud/commandframework/velocity/arguments/PlayerArgument.java
+@@ -192,7 +192,10 @@ public final class PlayerArgument<C> extends CommandArgument<C, Player> {
+                     PlayerParser.class,
+                     context,
+                     VelocityCaptionKeys.ARGUMENT_PARSE_FAILURE_PLAYER,
+-                    CaptionVariable.of("input", input)
++                    // cloudnet start - better captions
++                    input
++                    //CaptionVariable.of("input", input)
++                    // cloudnet start - better captions
+             );
+         }
+     }
+diff --git a/cloud-minecraft/cloud-velocity/src/main/java/cloud/commandframework/velocity/arguments/ServerArgument.java b/cloud-minecraft/cloud-velocity/src/main/java/cloud/commandframework/velocity/arguments/ServerArgument.java
+index 084f2f2e22de29b3c8986ef055fb75e8163701f7..1d81a30db2b4a228e53bdcf4b755573e64b198b8 100644
+--- a/cloud-minecraft/cloud-velocity/src/main/java/cloud/commandframework/velocity/arguments/ServerArgument.java
++++ b/cloud-minecraft/cloud-velocity/src/main/java/cloud/commandframework/velocity/arguments/ServerArgument.java
+@@ -185,7 +185,10 @@ public final class ServerArgument<C> extends CommandArgument<C, RegisteredServer
+                     ServerParser.class,
+                     context,
+                     VelocityCaptionKeys.ARGUMENT_PARSE_FAILURE_SERVER,
+-                    CaptionVariable.of("input", input)
++                    // cloudnet start - better captions
++                    input
++                    //CaptionVariable.of("input", input)
++                    // cloudnet end
+             );
+         }
+     }

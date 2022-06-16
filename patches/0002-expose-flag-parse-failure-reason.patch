@@ -1,0 +1,39 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: derklaro <git@derklaro.dev>
+Date: Thu, 16 Jun 2022 15:49:40 +0200
+Subject: [PATCH] expose flag parse failure reason
+
+
+diff --git a/cloud-core/src/main/java/cloud/commandframework/arguments/compound/FlagArgument.java b/cloud-core/src/main/java/cloud/commandframework/arguments/compound/FlagArgument.java
+index ac070405a08b784958684d14bef7a05da0baa7d7..35a7739480150a48a5a6dc81383f7d95a0998688 100644
+--- a/cloud-core/src/main/java/cloud/commandframework/arguments/compound/FlagArgument.java
++++ b/cloud-core/src/main/java/cloud/commandframework/arguments/compound/FlagArgument.java
+@@ -483,6 +483,7 @@ public final class FlagArgument<C> extends CommandArgument<C, Object> {
+ 
+         private static final long serialVersionUID = -7725389394142868549L;
+         private final String input;
++        private final FailureReason failureReason; // cloudnet
+ 
+         /**
+          * Construct a new flag parse exception
+@@ -507,6 +508,7 @@ public final class FlagArgument<C> extends CommandArgument<C, Object> {
+                     // cloudnet end
+             );
+             this.input = input;
++            this.failureReason = failureReason; // cloudnet
+         }
+ 
+         /**
+@@ -517,6 +519,12 @@ public final class FlagArgument<C> extends CommandArgument<C, Object> {
+         public String getInput() {
+             return this.input;
+         }
++
++        // cloudnet start - expose failure reason
++        public FailureReason getFailureReason() {
++            return this.failureReason;
++        }
++        // cloudnet end
+     }
+ 
+ 

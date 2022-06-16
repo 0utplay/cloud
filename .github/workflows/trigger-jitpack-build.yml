@@ -1,0 +1,14 @@
+name: Trigger Jitpack Build
+
+on:
+  push:
+    branches: [ "main" ]
+    tags-ignore: [ "**" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Jitpack Build
+        run: curl "https://jitpack.io/com/github/0utplay/cloud/main-SNAPSHOT/build.log"
